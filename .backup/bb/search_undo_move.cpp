@@ -18,7 +18,7 @@ void PlayBot() {
 	for (int board_type = 0; board_type < 3; ++board_type) {
 		for (int board_index = 0; board_index < kNPositions; ++board_index) {
 
-			b.Initialize( board_type, board_index );
+			b.Initialize(board_type, board_index);
 
 			int evaluation;
 
@@ -34,7 +34,7 @@ void PlayBot() {
 
 				start_time = high_resolution_clock::now();
 
-				evaluation = Minimax( b, depth, -999999, 999999, true );
+				evaluation = Minimax(b, depth, -999999, 999999, true);
 
 				time = high_resolution_clock::now() - start_time;
 				time_total += time.count();
@@ -144,17 +144,19 @@ inline int Evaluate(const U64 kBB[13]) {
 
 
 // Minimax
-inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool kSide ) {
+inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
 	//nodes += 1;
 
-	if (!kDepth) return Evaluate( b.bb );
+	if (!kDepth) return Evaluate(b.bb);
 
 	int evaluation;
 
 	U64 moves[100];
 	moves[99] = 0;
-	GenerateMoves( b.bb, moves, kSide );
+	GenerateMoves(b.bb, moves, kSide);
+
+	const U64 kUtil = b.bb[0];
 
 
 
@@ -164,11 +166,11 @@ inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool 
 
 		for (int i = 0; i < moves[99]; ++i) {
 
-			MakeMove( b.bb, moves[i], kSide );
+			MakeMove(b.bb, moves[i], kSide);
 
-			evaluation = Minimax( b, kDepth - 1, alpha, beta, false );
+			evaluation = Minimax(b, kDepth - 1, alpha, beta, false);
 
-      UndoMove(b.bb, moves[i]);
+			UndoMove(b.bb, moves[i], true, kUtil);
 
 
 			if (evaluation > max_eval) max_eval = evaluation;
@@ -184,11 +186,11 @@ inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool 
 
 		for (int i = 0; i < moves[99]; ++i) {
 
-			MakeMove( b.bb, moves[i], kSide );
+			MakeMove(b.bb, moves[i], kSide);
 
-			evaluation = Minimax( b, kDepth - 1, alpha, beta, true );
+			evaluation = Minimax(b, kDepth - 1, alpha, beta, true);
 
-      UndoMove(b.bb, moves[i]);
+			UndoMove(b.bb, moves[i], false, kUtil);
 
 
 			if (evaluation < min_eval) min_eval = evaluation;

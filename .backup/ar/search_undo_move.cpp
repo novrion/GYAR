@@ -116,6 +116,13 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
   moves[99] = Move(0, 0, 0, 0, 0);
   GenerateMoves(b, moves, kSide);
 
+  const int en_passant_x = b.en_passant_x;
+  const int en_passant_y = b.en_passant_y;
+  const bool w_l_castle = b.w_l_castle;
+  const bool w_r_castle = b.w_r_castle;
+  const bool b_l_castle = b.b_l_castle;
+  const bool b_r_castle = b.b_r_castle;
+
 
 
   if (kSide) {
@@ -128,7 +135,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
       evaluation = Minimax(b, kDepth - 1, alpha, beta, false);
 
-      UndoMove(b, moves[i]);
+      UndoMove(b, moves[i], en_passant_x, en_passant_y, w_l_castle, w_r_castle, b_l_castle, b_r_castle);
 
 
       if (evaluation > max_eval) max_eval = evaluation;
@@ -148,7 +155,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
       evaluation = Minimax(b, kDepth - 1, alpha, beta, true);
 
-      UndoMove(b, moves[i]);
+      UndoMove(b, moves[i], en_passant_x, en_passant_y, w_l_castle, w_r_castle, b_l_castle, b_r_castle);
 
 
       if (evaluation < min_eval) min_eval = evaluation;

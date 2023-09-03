@@ -4,9 +4,7 @@
 
 void GenerateMoves(Board& b, Move moves[100], const bool kSide);
 
-
-inline void AddMove(Move moves[100], Move move);
-
+inline void AddMove(Move moves[100], const Move kMove);
 
 inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPosY);
 inline void WKnightMoves(Board& b, Move moves[100], const int kPosX, const int kPosY);

@@ -4,7 +4,6 @@ using namespace std;
 
 
 
-// Bit Manipulation
 int PopLsb(U64& b) {
 
 	const int kS = __builtin_ctzll(b);
@@ -14,13 +13,6 @@ int PopLsb(U64& b) {
 }
 
 
-// Add Moves
-inline void AddMove(U64 moves[100], const U64 kMove) {
-	moves[moves[99]++] = kMove;
-}
-
-
-// Generate Moves
 void GenerateMoves(const U64 kBB[13], U64 moves[100], const bool kSide) {
 
 	const U64 kWBlock = W_BLOCK(kBB);
@@ -61,7 +53,11 @@ void GenerateMoves(const U64 kBB[13], U64 moves[100], const bool kSide) {
 }
 
 
-// Moves
+inline void AddMove(U64 moves[100], const U64 kMove) {
+	moves[moves[99]++] = kMove;
+}
+
+
 inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, U64 moves[100], const int kEnPassantSquare) {
 
 	U64 bitboard = 1ULL << kSquare;
@@ -79,7 +75,6 @@ inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 8), 1, 0, 5, 0, 0, 0));
 		}
 
-
 		if ((bitboard >> 7 & kNotAFile) && (bitboard >> 7 & kBBlock)) {
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 7), 1, 1, 2, 0, 0, 0));
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 7), 1, 1, 3, 0, 0, 0));
@@ -96,6 +91,7 @@ inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 	}
 
 	else {
+
 		if ((bitboard >> 7 & kNotAFile) && (bitboard >> 7 & kBBlock)) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 7), 1, 1, 0, 0, 0, 0));
 		if ((bitboard >> 9 & kNotHFile) && (bitboard >> 9 & kBBlock)) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 9), 1, 1, 0, 0, 0, 0));
 
@@ -103,7 +99,7 @@ inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 8), 1, 0, 0, 0, 0, 0));
 
-			// 2 Pawn
+			// Double Pawn Move
 			if (rank == 6 && !((bitboard >> 16) & (kWBlock | kBBlock))) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare - 16), 1, 0, 0, 1, 0, 0));
 		}
 
@@ -469,6 +465,7 @@ inline void BPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 
 	// Promotion
 	if (rank == 6) {
+
 		if (!((bitboard << 8) & (kWBlock | kBBlock))) {
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 8), 7, 0, 8, 0, 0, 0));
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 8), 7, 0, 9, 0, 0, 0));
@@ -482,6 +479,7 @@ inline void BPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 7), 7, 1, 10, 0, 0, 0));
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 7), 7, 1, 11, 0, 0, 0));
 		}
+
 		if ((bitboard << 9 & kNotAFile) && (bitboard << 9 & kWBlock)) {
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 9), 7, 1, 8, 0, 0, 0));
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 9), 7, 1, 9, 0, 0, 0));
@@ -491,6 +489,7 @@ inline void BPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 	}
 
 	else {
+
 		if ((bitboard << 7 & kNotHFile) && (bitboard << 7 & kWBlock)) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 7), 7, 1, 0, 0, 0, 0));
 		if ((bitboard << 9 & kNotAFile) && (bitboard << 9 & kWBlock)) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 9), 7, 1, 0, 0, 0, 0));
 
@@ -498,7 +497,7 @@ inline void BPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, 
 
 			AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 8), 7, 0, 0, 0, 0, 0));
 
-			// 2 Pawn
+			// Double Pawn Move
 			if (rank == 1 && !((bitboard << 16) & (kWBlock | kBBlock))) AddMove(moves, ENCODE_MOVE(kSquare, (kSquare + 16), 7, 0, 0, 1, 0, 0));
 		}
 

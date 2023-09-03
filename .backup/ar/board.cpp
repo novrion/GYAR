@@ -56,7 +56,7 @@ void MakeMove(Board& b, Move& move) {
       b.board[3][7] = -5000;
     }
 
-    else if (move.castle == 4) {
+    else {
       b.board[4][7] = 0;
       b.board[6][7] = -100000;
 
@@ -66,11 +66,13 @@ void MakeMove(Board& b, Move& move) {
   }
 
   else if (move.promotion) {
+
     b.board[move.to_x][move.to_y] = move.promotion;
     b.board[move.from_x][move.from_y] = 0;
   }
 
   else if (move.en_passant) {
+
     b.board[move.to_x][move.to_y] = b.board[move.from_x][move.from_y];
     b.board[move.from_x][move.from_y] = 0;
 
@@ -78,6 +80,7 @@ void MakeMove(Board& b, Move& move) {
   }
 
   else if (move.double_pawn) {
+
     b.en_passant_x = move.to_x;
     b.en_passant_y = move.to_y;
 
@@ -86,6 +89,7 @@ void MakeMove(Board& b, Move& move) {
   }
 
   else {
+
     b.board[move.to_x][move.to_y] = b.board[move.from_x][move.from_y];
     b.board[move.from_x][move.from_y] = 0;
   }
@@ -105,6 +109,7 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
 
 
   if (move.castle) {
+
     if (move.castle == 1) {
       b.board[4][0] = 0;
       b.board[2][0] = 100000;
@@ -140,6 +145,7 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
   }
 
   else if (move.promotion) {
+
     if (move.to_y == 7) {
       b.board[move.from_x][move.from_y] = 1000;
     }
@@ -151,6 +157,7 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
   }
 
   else if (move.en_passant) {
+
     if (move.to_y > move.from_y) {
       b.board[move.to_x][move.to_y] = 0;
       b.board[move.from_x][move.from_y] = 1000;
@@ -163,14 +170,12 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
     }
   }
 
-  // double pawn move does not need a special case
-
   else {
+
     b.board[move.from_x][move.from_y] = b.board[move.to_x][move.to_y];
     b.board[move.to_x][move.to_y] = move.capture;
   }
 }
-
 
 
 // Initialization
@@ -183,7 +188,7 @@ inline void IterateBoard(Board& b, const int kPosition[8][8]) {
   }
 }
 
-void Board::Initialize(const int kBoardType, int kBoardIndex) {
+void Board::Initialize(const int kBoardType, const int kBoardIndex) {
 
   if (kBoardType == 0) {
     IterateBoard(*this, kBoardRegular[kBoardIndex]);

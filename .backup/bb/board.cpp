@@ -1,7 +1,5 @@
 #include "board.h"
 
-using namespace std;
-
 
 
 void MakeMove(U64 bb[13], U64& move, const bool kSide) {
@@ -10,7 +8,7 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 	int target = GET_MOVE_TARGET(move);
 	int piece = GET_MOVE_PIECE(move);
 
-	int _2pawn = GET_MOVE_2_PAWN(move);
+	int double_pawn = GET_MOVE_2_PAWN(move);
 	int en_passant = GET_MOVE_EN_PASSANT(move);
 	int castle = GET_MOVE_CASTLE(move);
 
@@ -52,7 +50,7 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 				if (bb[i] & (1ULL << target)) {
 					POP_BIT(bb[i], target);
 					move &= kCaptureMask;
-					move |= (i << 23);
+					SET_MOVE_CAPTURE(move, i);
 					break;
 				}
 			}
@@ -62,7 +60,7 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 				if (bb[i] & (1ULL << target)) {
 					POP_BIT(bb[i], target);
 					move &= kCaptureMask;
-					move |= (i << 23);
+					SET_MOVE_CAPTURE(move, i);
 					break;
 				}
 			}
@@ -71,92 +69,69 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 
 	else if (castle) {
 
-		if (kSide) {
+		if (castle == 1) {
+			bb[0] &= kWBothCastleMask;
 
 			POP_BIT(bb[6], 60);
+			SET_BIT(bb[6], 58);
 
-			if (target > source) {
-
-				bb[0] &= kWBothCastleMask;
-
-
-				SET_BIT(bb[6], 62);
-
-				POP_BIT(bb[4], 63);
-				SET_BIT(bb[4], 61);
-			}
-
-			else {
-
-				bb[0] &= kWBothCastleMask;
-
-
-				SET_BIT(bb[6], 58);
-
-				POP_BIT(bb[4], 56);
-				SET_BIT(bb[4], 59);
-			}
+			POP_BIT(bb[4], 56);
+			SET_BIT(bb[4], 59);
 		}
 
-		else {
+		else if (castle == 2) {
+			bb[0] &= kWBothCastleMask;
+
+			POP_BIT(bb[6], 60);
+			SET_BIT(bb[6], 62);
+
+			POP_BIT(bb[4], 63);
+			SET_BIT(bb[4], 61);
+		}
+
+
+		else if (castle == 3) {
+			bb[0] &= kBBothCastleMask;
 
 			POP_BIT(bb[12], 4);
+			SET_BIT(bb[12], 2);
 
-			if (target > source) {
-
-				bb[0] &= kBBothCastleMask;
-
-
-				SET_BIT(bb[12], 6);
-
-				POP_BIT(bb[10], 7);
-				SET_BIT(bb[10], 5);
-			}
-
-			else {
-
-				bb[0] &= kBBothCastleMask;
-
-
-				SET_BIT(bb[12], 2);
-
-				POP_BIT(bb[10], 0);
-				SET_BIT(bb[10], 3);
-			}
-		}
-	}
-
-	else if (en_passant) {
-
-		if (kSide) {
-
-			POP_BIT(bb[1], source);
-			SET_BIT(bb[1], target);
-
-			POP_BIT(bb[7], target + 8);
+			POP_BIT(bb[10], 0);
+			SET_BIT(bb[10], 3);
 		}
 
 		else {
+			bb[0] &= kBBothCastleMask;
 
-			POP_BIT(bb[7], source);
-			SET_BIT(bb[7], target);
+			POP_BIT(bb[12], 4);
+			SET_BIT(bb[12], 6);
 
-			POP_BIT(bb[1], target - 8);
+			POP_BIT(bb[10], 7);
+			SET_BIT(bb[10], 5);
 		}
-	}
-
-	else if (_2pawn) {
-
-		POP_BIT(bb[piece], source);
-		SET_BIT(bb[piece], target);
-
-		bb[0] |= target;
 	}
 
 	else if (promotion) {
 
 		POP_BIT(bb[piece], source);
 		SET_BIT(bb[promotion], target);
+	}
+
+	else if (en_passant) {
+
+		POP_BIT(bb[piece], source);
+		SET_BIT(bb[piece], target);
+
+		if (kSide) POP_BIT(bb[7], target + 8);
+		else POP_BIT(bb[1], target - 8);
+	}
+
+	else if (double_pawn) {
+
+		POP_BIT(bb[piece], source);
+		SET_BIT(bb[piece], target);
+
+		bb[0] |= target;
 	}
 
 	else {
@@ -166,15 +141,14 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 	}
 }
 
-void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 util) {
+void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 kUtil) {
 
-	bb[0] = util;
+	bb[0] = kUtil;
 
 	int source = GET_MOVE_SOURCE(kMove);
 	int target = GET_MOVE_TARGET(kMove);
 	int piece = GET_MOVE_PIECE(kMove);
 
-	int _2pawn = GET_MOVE_2_PAWN(kMove);
 	int en_passant = GET_MOVE_EN_PASSANT(kMove);
 	int castle = GET_MOVE_CASTLE(kMove);
 
@@ -182,45 +156,44 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 util) {
 	int capture = GET_MOVE_CAPTURE(kMove);
 
 
+
 	if (castle) {
-		if (kSide) {
-			if (castle == 1) {
-				POP_BIT(bb[6], 58);
-				SET_BIT(bb[6], 60);
 
-				POP_BIT(bb[4], 59);
-				SET_BIT(bb[4], 56);
-			}
+		if (castle == 1) {
+			POP_BIT(bb[6], 58);
+			SET_BIT(bb[6], 60);
 
-			else if (castle == 2) {
-				POP_BIT(bb[6], 62);
-				SET_BIT(bb[6], 60);
-
-				POP_BIT(bb[4], 61);
-				SET_BIT(bb[4], 63);
-			}
+			POP_BIT(bb[4], 59);
+			SET_BIT(bb[4], 56);
 		}
 
-		else {
-			if (castle == 3) {
-				POP_BIT(bb[12], 2);
-				SET_BIT(bb[12], 4);
+		else if (castle == 2) {
+			POP_BIT(bb[6], 62);
+			SET_BIT(bb[6], 60);
 
-				POP_BIT(bb[10], 3);
-				SET_BIT(bb[10], 0);
-			}
+			POP_BIT(bb[4], 61);
+			SET_BIT(bb[4], 63);
+		}
 
-			else if (castle == 4) {
-				POP_BIT(bb[12], 6);
-				SET_BIT(bb[12], 4);
+		else if (castle == 3) {
+			POP_BIT(bb[12], 2);
+			SET_BIT(bb[12], 4);
 
-				POP_BIT(bb[10], 5);
-				SET_BIT(bb[10], 7);
-			}
+			POP_BIT(bb[10], 3);
+			SET_BIT(bb[10], 0);
+		}
+
+		else if (castle == 4) {
+			POP_BIT(bb[12], 6);
+			SET_BIT(bb[12], 4);
+
+			POP_BIT(bb[10], 5);
+			SET_BIT(bb[10], 7);
 		}
 	}
 
 	else if (promotion) {
+
 		POP_BIT(bb[promotion], target);
 		SET_BIT(bb[piece], source);
 
@@ -228,6 +201,7 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 util) {
 	}
 
 	else if (en_passant) {
+
 		POP_BIT(bb[piece], target);
 		SET_BIT(bb[piece], source);
 
@@ -236,6 +210,7 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 util) {
 	}
 
 	else if (capture) {
+
 		POP_BIT(bb[piece], target);
 		SET_BIT(bb[piece], source);
 
@@ -243,6 +218,7 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 util) {
 	}
 
 	else {
+
 		POP_BIT(bb[piece], target);
 		SET_BIT(bb[piece], source);
 	}

@@ -18,7 +18,7 @@ void PlayBot() {
 	for (int board_type = 0; board_type < 3; ++board_type) {
 		for (int board_index = 0; board_index < kNPositions; ++board_index) {
 
-			b.Initialize( board_type, board_index );
+			b.Initialize(board_type, board_index);
 
 			int evaluation;
 
@@ -34,7 +34,7 @@ void PlayBot() {
 
 				start_time = high_resolution_clock::now();
 
-				evaluation = Minimax( b, depth, -999999, 999999, true );
+				evaluation = Minimax(b, depth, -999999, 999999, true);
 
 				time = high_resolution_clock::now() - start_time;
 				time_total += time.count();
@@ -72,8 +72,6 @@ void PlayBot() {
 
 
 
-
-
 // Bit Manipulation
 inline int BitCount(U64 x) {
 
@@ -83,8 +81,6 @@ inline int BitCount(U64 x) {
 
 	return ((x * 0x0101010101010101) >> 56);
 }
-
-
 
 
 
@@ -141,21 +137,19 @@ inline int Evaluate(const U64 kBB[13]) {
 
 
 
-
-
 // Minimax
-inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool kSide ) {
+inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
 	//nodes += 1;
 
-	if (!kDepth) return Evaluate( b.bb );
+	if (!kDepth) return Evaluate(b.bb);
 
 	Board b_copy;
 	int evaluation;
 
 	U64 moves[100];
 	moves[99] = 0;
-	GenerateMoves( b.bb, moves, kSide );
+	GenerateMoves(b.bb, moves, kSide);
 
 
 
@@ -166,9 +160,9 @@ inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool 
 		for (int i = 0; i < moves[99]; ++i) {
 
 			b_copy = b;
-			MakeMove( b_copy.bb, moves[i], kSide );
+			MakeMove(b_copy.bb, moves[i], kSide);
 
-			evaluation = Minimax( b_copy, kDepth - 1, alpha, beta, false );
+			evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, false);
 
 
 			if (evaluation > max_eval) max_eval = evaluation;
@@ -185,9 +179,9 @@ inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool 
 		for (int i = 0; i < moves[99]; ++i) {
 
 			b_copy = b;
-			MakeMove( b_copy.bb, moves[i], kSide );
+			MakeMove(b_copy.bb, moves[i], kSide);
 
-			evaluation = Minimax( b_copy, kDepth - 1, alpha, beta, true );
+			evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, true);
 
 
 			if (evaluation < min_eval) min_eval = evaluation;

@@ -36,7 +36,6 @@ void GenerateMoves(Board& b, Move moves[100], const bool kSide) {
 }
 
 
-
 inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
 
   if (kSide) {
@@ -82,8 +81,8 @@ inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
   return true;
 }
 
-inline void AddMove(Move moves[100], Move move) {
-  moves[moves[99].from_x++] = move;
+inline void AddMove(Move moves[100], const Move kMove) {
+  moves[moves[99].from_x++] = kMove;
 }
 
 
@@ -91,12 +90,14 @@ inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
 
   // Promotion
   if (kPosY == 6) {
+
     if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY + 1] < 0) {
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 3000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 3100, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 5000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 9000, 0));
     }
+
     if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY + 1] < 0) {
       AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 3000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 3100, 0));
@@ -113,24 +114,20 @@ inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
   }
 
   else {
-    if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY + 1] < 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1]));
-    }
-    if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY + 1] < 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1]));
-    }
+
+    if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY + 1] < 0) AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1]));
+    if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY + 1] < 0) AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1]));
 
     if (!b.board[kPosX][kPosY + 1]) {
       AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0));
 
       // Double Pawn Move
-      if (kPosY == 1 && !b.board[kPosX][kPosY + 2]) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 2, 0, false, true, 0, 0));
-      }
+      if (kPosY == 1 && !b.board[kPosX][kPosY + 2]) AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 2, 0, false, true, 0, 0));
     }
 
     // En Passant
     if (b.en_passant_x != -1 && b.en_passant_y == kPosY) {
+
       if (kPosX == b.en_passant_x + 1) {
         AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, 1000, true, false, 0, 0));
 
@@ -524,12 +521,14 @@ inline void BPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
 
   // Promotion
   if (kPosY == 1) {
+
     if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY - 1] > 0) {
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -3000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -3100, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -5000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -9000, 0));
     }
+
     if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY - 1] > 0) {
       AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -3000, 0));
       AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -3100, 0));
@@ -546,24 +545,20 @@ inline void BPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
   }
 
   else {
-    if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY - 1] > 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1]));
-    }
-    if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY - 1] > 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1]));
-    }
+
+    if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY - 1] > 0) AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1]));
+    if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY - 1] > 0) AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1]));
 
     if (!b.board[kPosX][kPosY - 1]) {
       AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0));
 
       // Double Pawn Move
-      if (kPosY == 6 && !b.board[kPosX][kPosY - 2]) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 2, 0, false, true, 0, 0));
-      }
+      if (kPosY == 6 && !b.board[kPosX][kPosY - 2]) AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 2, 0, false, true, 0, 0));
     }
 
     // En Passant
     if (b.en_passant_x != -1 && b.en_passant_y == kPosY) {
+
       if (kPosX == b.en_passant_x + 1) {
         AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, -1000, true, false, 0, 0));
       }

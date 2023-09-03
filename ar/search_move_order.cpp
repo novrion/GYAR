@@ -72,8 +72,6 @@ void PlayBot() {
 
 
 
-
-
 // Evaluation
 inline int Evaluate(Board& b) {
 
@@ -98,8 +96,6 @@ inline int Evaluate(Board& b) {
 
   return eval;
 }
-
-
 
 
 

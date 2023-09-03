@@ -5,7 +5,7 @@ using namespace std::chrono;
 
 
 
-int nodes = 0;
+//int nodes = 0;
 void PlayBot() {
 
   int depth;
@@ -30,7 +30,7 @@ void PlayBot() {
 
       for (int i = 0; i < kNTests; ++i) {
 
-        nodes = 0;
+        //nodes = 0;
 
         start_time = high_resolution_clock::now();
 
@@ -39,18 +39,13 @@ void PlayBot() {
         time = high_resolution_clock::now() - start_time;
         time_total += time.count();
 
-        cout << "[" << i + 1 << "] " << time.count() << "eval: " << evaluation << "\n";
+        cout << "[" << i + 1 << "] " << time.count() << "\n";
       }
 
       average_times[board_type][board_index] = time_total / kNTests;
       cout << "\n\nAverage time: " << time_total / kNTests << " s\n\n";
 
-      cout << "\n\nnodes: " << nodes;
-      for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 8; ++j) {
-          cout << "\n" << b.board[i][j];
-        }
-      }
+      //cout << "\n\nnodes: " << nodes;
     }
   }
 
@@ -74,8 +69,6 @@ void PlayBot() {
   }
   cout << "----------------------------------- DATA ------------------------------------------\n\n\n\n";
 }
-
-
 
 
 
@@ -106,12 +99,10 @@ inline int Evaluate(Board& b) {
 
 
 
-
-
 // Minimax
 inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
-  nodes += 1;
+  //nodes += 1;
 
   if (!kDepth) return Evaluate(b);
 

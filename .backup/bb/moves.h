@@ -35,12 +35,9 @@ const U64 kBCastleLongKingMask = 1536ULL;
 int PopLsb(U64& b);
 
 
-// Add Move
-inline void AddMove(U64 moves[100], const U64 kMove);
-
-
-// Move Generation
 void GenerateMoves(const U64 kBB[13], U64 moves[100], const bool kSide);
+
+inline void AddMove(U64 moves[100], const U64 kMove);
 
 inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, U64 moves[100], const int kEnPassantSquare);
 inline void WKnightMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, U64 moves[100]);

@@ -72,8 +72,6 @@ void PlayBot() {
 
 
 
-
-
 // Bit Manipulation
 inline int BitCount(U64 x) {
 
@@ -83,8 +81,6 @@ inline int BitCount(U64 x) {
 
 	return ((x * 0x0101010101010101) >> 56);
 }
-
-
 
 
 
@@ -138,8 +134,6 @@ inline int Evaluate(const U64 kBB[13]) {
 
 	return evaluation;
 }
-
-
 
 
 

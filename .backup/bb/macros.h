@@ -2,9 +2,8 @@
 
 #include <iostream>
 #include <algorithm>
-#include <string>
 #include <chrono>
-
+#include <string>
 
 
 #define U64 unsigned long long
@@ -42,7 +41,6 @@
 #define GET_UTILITY_B_LONG_CASTLE(utility) (utility & 512ULL)
 
 
-// Constants
 const int kNPositions = 10;
 const int kNTests = 100;
 

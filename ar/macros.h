@@ -1,8 +1,9 @@
 #pragma once
 
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <chrono>
+
 
 const int kNPositions = 10;
 const int kNTests = 100;

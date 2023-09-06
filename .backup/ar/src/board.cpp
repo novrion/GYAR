@@ -179,26 +179,65 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
 
 
 // Initialization
-inline void IterateBoard(Board& b, const int kPosition[8][8]) {
+inline void ParseFen(Board& b, const std::string& kFen) {
 
-  for (int x = 0; x < 8; ++x) {
-    for (int y = 0; y < 8; ++y) {
-      b.board[x][y] = kPosition[x][y];
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      b.board[i][j] = 0;
+    }
+  }
+
+  b.side = false;
+  b.en_passant_x = -1;
+  b.w_l_castle = false;
+  b.w_r_castle = false;
+  b.b_l_castle = false;
+  b.b_r_castle = false;
+
+  int8_t stage = 0;
+  int x = 0, y = 7;
+
+  for (int i = 0; i < 100; ++i) {
+
+    if (kFen[i] == ' ') ++stage;
+
+
+    if (!stage) {
+
+      if (kFen[i] == '/') {
+        --y;
+        continue;
+      }
+      else if (isdigit(kFen[i])) x += kFen[i] - '0';
+      else {
+        b.board[x++][y] = kIPiece.at(kFen[i]);
+      }
+    }
+
+    else if (stage == 1) {
+      kFen[++i] == 'w' ? b.side = true : 0;
+    }
+
+    else if (stage == 2) {
+
+      if (kFen[i] == 'K') b.w_r_castle = true;
+      else if (kFen[i] == 'Q') b.w_l_castle = true;
+      else if (kFen[i] == 'k') b.b_r_castle = true;
+      else if (kFen[i] == 'q') b.b_l_castle = true;
+    }
+
+    else if (stage == 3) {
+
+      if (kFen[i + 1] == '-') break;
+      else {
+        b.en_passant_x = kFen[i + 1] - 97;
+        b.en_passant_y = kFen[i + 2] - '0' - 1;
+        break;
+      }
     }
   }
 }
 
-void Board::Initialize(const int kBoardType, const int kBoardIndex) {
-
-  if (kBoardType == 0) {
-    IterateBoard(*this, kBoardRegular[kBoardIndex]);
-  }
-
-  else if (kBoardType == 1) {
-    IterateBoard(*this, kBoardTactic[kBoardIndex]);
-  }
-
-  else {
-    IterateBoard(*this, kBoardSmall[kBoardIndex]);
-  }
+void Board::Initialize(const std::string& kFen) {
+  ParseFen(*this, kFen);
 }

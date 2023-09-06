@@ -3,10 +3,12 @@
 #include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <map>
 
 
 const int kNPositions = 10;
 const int kNTests = 100;
+const int kNMaxFen = 50;
 
 const int kPositionScore[8][8] = {
   {0, 0, 0, 0, 0, 0, 0, 0},
@@ -276,7 +278,9 @@ const int kBoardSmall[kNPositions][8][8] = {
 
 struct Board {
   int board[8][8];
-  void Initialize(const int kBoardType, const int kBoardIndex);
+  void Initialize(const std::string& kFen);
+
+  bool side;
 
   int en_passant_x;
   int en_passant_y;

@@ -8,66 +8,77 @@ using namespace std::chrono;
 //int nodes = 0;
 void PlayBot() {
 
-	int depth;
-	cout << "depth: ";
+  int depth;
 	cin >> depth;
 
-	Board b{};
-	double average_times[3][kNPositions] = {};
+	int n_position[3];
+	cin >> n_position[0] >> n_position[1] >> n_position[2];
 
-	for (int board_type = 0; board_type < 3; ++board_type) {
-		for (int board_index = 0; board_index < kNPositions; ++board_index) {
-
-			b.Initialize( board_type, board_index );
-
-			int evaluation;
-
-			double time_total = 0;
-
-			duration<double> time;
-			time_point<high_resolution_clock> start_time;
-
-
-			for (int i = 0; i < kNTests; ++i) {
-
-				//nodes = 0;
-
-				start_time = high_resolution_clock::now();
-
-				evaluation = Minimax( b, depth, -999999, 999999, true );
-
-				time = high_resolution_clock::now() - start_time;
-				time_total += time.count();
-
-				cout << "[" << i + 1 << "] " << time.count() << "\n";
-			}
-
-			average_times[board_type][board_index] = time_total / kNTests;
-			cout << "\n\nAverage time: " << time_total / kNTests << " s\n\n";
-
-			//cout << "\n\nnodes: " << nodes;
-		}
-	}
-
-
-
-
-
-	cout << "----------------------------------- DATA ------------------------------------------\n\n";
-	cout << "Average time taken for each position measured in seconds:\n\n\n";
+	string fen[3][kNMaxFen];
 	for (int i = 0; i < 3; ++i) {
-
-		if (i == 0) cout << "---------- Regular positions ----------\n\n";
-		else if (i == 1) cout << "---------- Tactic positions ----------\n\n";
-		else cout << "---------- Small positions ----------\n\n";
-
-		for (int j = 0; j < kNPositions; ++j) {
-			cout << "[" << j + 1 << "] " << average_times[i][j] << "\n";
+		for (int j = 0; j < n_position[i]; ++j) {
+			cin >> fen[i][j];
 		}
-
-		cout << "\n\n";
 	}
-	cout << "----------------------------------- DATA ------------------------------------------\n\n\n\n";
+
+
+
+  Board b;
+  double average_times[3][kNMaxFen];
+
+  for (int board_type = 0; board_type < 3; ++board_type) {
+    for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
+
+			b.Initialize(fen[board_type][board_index]);
+
+      int evaluation;
+
+      double time_total = 0;
+
+      duration<double> time;
+      time_point<high_resolution_clock> start_time;
+
+
+      for (int i = 0; i < kNTests; ++i) {
+
+        //nodes = 0;
+
+        start_time = high_resolution_clock::now();
+
+        evaluation = Minimax(b, depth, -999999, 999999, GET_UTILITY_SIDE(b.bb[0]));
+
+        time = high_resolution_clock::now() - start_time;
+        time_total += time.count();
+
+        cout << "[" << i + 1 << "] " << time.count() << "\n";
+      }
+
+      average_times[board_type][board_index] = time_total / kNTests;
+      cout << "\n\nAverage time: " << time_total / kNTests << " s\n\n";
+
+      //cout << "\n\nnodes: " << nodes;
+    }
+  }
+
+
+
+
+
+  cout << "----------------------------------- DATA ------------------------------------------\n\n";
+  cout << "Average time taken for each position measured in seconds:\n\n\n";
+  for (int i = 0; i < 3; ++i) {
+
+    if (i == 0) cout << "---------- Regular positions ----------\n\n";
+    else if (i == 1) cout << "---------- Tactic positions ----------\n\n";
+    else cout << "---------- Small positions ----------\n\n";
+
+    for (int j = 0; j < n_position[i]; ++j) {
+      cout << "[" << j + 1 << "] " << average_times[i][j] << "\n";
+    }
+
+    cout << "\n\n";
+  }
+  cout << "----------------------------------- DATA ------------------------------------------\n\n\n\n";
 }
 
 

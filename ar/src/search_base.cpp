@@ -9,16 +9,27 @@ using namespace std::chrono;
 void PlayBot() {
 
   int depth;
-  cout << "depth: ";
-  cin >> depth;
+	cin >> depth;
 
-  Board b{};
-  double average_times[3][kNPositions] = {};
+	int n_position[3];
+	cin >> n_position[0] >> n_position[1] >> n_position[2];
+
+	string fen[3][kNMaxFen];
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < n_position[i]; ++j) {
+			cin >> fen[i][j];
+		}
+	}
+
+
+
+  Board b;
+  double average_times[3][kNMaxFen];
 
   for (int board_type = 0; board_type < 3; ++board_type) {
-    for (int board_index = 0; board_index < kNPositions; ++board_index) {
+    for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
 
-      b.Initialize(board_type, board_index);
+			b.Initialize(fen[board_type][board_index]);
 
       int evaluation;
 
@@ -34,7 +45,7 @@ void PlayBot() {
 
         start_time = high_resolution_clock::now();
 
-        evaluation = Minimax(b, depth, -999999, 999999, true);
+        evaluation = Minimax(b, depth, -999999, 999999, b.side);
 
         time = high_resolution_clock::now() - start_time;
         time_total += time.count();
@@ -61,7 +72,7 @@ void PlayBot() {
     else if (i == 1) cout << "---------- Tactic positions ----------\n\n";
     else cout << "---------- Small positions ----------\n\n";
 
-    for (int j = 0; j < kNPositions; ++j) {
+    for (int j = 0; j < n_position[i]; ++j) {
       cout << "[" << j + 1 << "] " << average_times[i][j] << "\n";
     }
 

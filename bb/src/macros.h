@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <string>
+#include <map>
 
 
 #define U64 unsigned long long
@@ -39,10 +40,12 @@
 #define GET_UTILITY_W_LONG_CASTLE(utility) (utility & 128ULL)
 #define GET_UTILITY_B_SHORT_CASTLE(utility) (utility & 256ULL)
 #define GET_UTILITY_B_LONG_CASTLE(utility) (utility & 512ULL)
+#define GET_UTILITY_SIDE(utility) (utility & 1024ULL)
 
 
 const int kNPositions = 10;
 const int kNTests = 100;
+const int kNMaxFen = 50;
 
 const int kMaterialScore[13] = { 0, 1000, 3000, 3100, 5000, 9000, 100000, -1000, -3000, -3100, -5000, -9000, -100000 };
 const int kPositionScore[64] = {
@@ -310,8 +313,9 @@ const int kBoardSmall[kNPositions][8][8] = {
 };
 
 
+
 // Board
 struct Board {
 	U64 bb[13];
-	void Initialize(const int kBoardType, const int kBoardIndex);
+	void Initialize(const std::string& kFen);
 };

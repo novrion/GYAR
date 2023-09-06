@@ -4,14 +4,11 @@
 
 int main() {
 
-	PlayBot();
-
-	char c;
-	std::cin >> c;
+  PlayBot();
 
 
 
 
 
-	return 0;
+  return 0;
 }

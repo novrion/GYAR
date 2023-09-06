@@ -226,93 +226,61 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 kUtil) {
 
 
 // Initialization
-inline void IterateBoard(Board& b, const int kPosition[8][8]) {
+inline int StringToSquare(const std::string& kStr) {
+	return (kStr[0] - 97) + (8 - (kStr[1] - '0')) * 8;
+}
+
+inline void ParseFen(Board& b, const std::string& kFen) {
 
 	for (int i = 0; i < 13; ++i) {
 		b.bb[i] = 0ULL;
 	}
 
-	int square;
+	int8_t stage = 0;
+	std::string en_passant_square;
 
-	for (int x = 0; x < 8; ++x) {
-		for (int y = 0; y < 8; ++y) {
+	int square = 0;
+	for (int i = 0; i < 100; ++i) {
 
-			square = (7 - y) * 8 + x;
-
-			switch (kPosition[x][y]) {
-
-				case 1000:
-					b.bb[1] |= 1ULL << square;
-					break;
-
-				case 3000:
-					b.bb[2] |= 1ULL << square;
-					break;
-
-				case 3100:
-					b.bb[3] |= 1ULL << square;
-					break;
-
-				case 5000:
-					b.bb[4] |= 1ULL << square;
-					break;
-
-				case 9000:
-					b.bb[5] |= 1ULL << square;
-					break;
-
-				case 100000:
-					b.bb[6] |= 1ULL << square;
-					break;
+		if (kFen[i] == ' ') ++stage;
 
 
+		if (!stage) {
 
+			if (kFen[i] == '/') continue;
+			else if (isdigit(kFen[i])) square += kFen[i] - '0';
+			else {
+				b.bb[kIPiece.at(kFen[i])] |= 1ULL << square;
+				++square;
+			}
+		}
 
+		else if (stage == 1) {
+			kFen[++i] == 'w' ? b.bb[0] |= 1ULL << 10 : 0;
+		}
 
-				case -1000:
-					b.bb[7] |= 1ULL << square;
-					break;
+		else if (stage == 2) {
 
-				case -3000:
-					b.bb[8] |= 1ULL << square;
-					break;
+			if (kFen[i] == 'K') b.bb[0] |= 1ULL << 6;
+			else if (kFen[i] == 'Q') b.bb[0] |= 1ULL << 7;
+			else if (kFen[i] == 'k') b.bb[0] |= 1ULL << 8;
+			else if (kFen[i] == 'q') b.bb[0] |= 1ULL << 9;
+		}
 
-				case -3100:
-					b.bb[9] |= 1ULL << square;
-					break;
+		else if (stage == 3) {
 
-				case -5000:
-					b.bb[10] |= 1ULL << square;
-					break;
+			if (kFen[i + 1] == '-') break;
+			else {
+				en_passant_square += kFen[i + 1];
+				en_passant_square += kFen[i + 2];
 
-				case -9000:
-					b.bb[11] |= 1ULL << square;
-					break;
-
-				case -100000:
-					b.bb[12] |= 1ULL << square;
-					break;
-
-
-
-				default:
-					0;
+				b.bb[0] |= StringToSquare(en_passant_square);
+				break;
 			}
 		}
 	}
 }
 
-void Board::Initialize(const int kBoardType, const int kBoardIndex) {
-
-	if (kBoardType == 0) {
-		IterateBoard(*this, kBoardRegular[kBoardIndex]);
-	}
-
-	else if (kBoardType == 1) {
-		IterateBoard(*this, kBoardTactic[kBoardIndex]);
-	}
-
-	else {
-		IterateBoard(*this, kBoardSmall[kBoardIndex]);
-	}
+void Board::Initialize(const std::string& kFen) {
+	ParseFen(*this, kFen);
 }

@@ -6,9 +6,6 @@ int main() {
 
   PlayBot();
 
-  char c;
-  std::cin >> c;
-
 
 
 

@@ -9,15 +9,26 @@ using namespace std::chrono;
 void PlayBot() {
 
   int depth;
-	cin >> depth;
+	scanf("%i", &depth);
 
 	int n_position[3];
-	cin >> n_position[0] >> n_position[1] >> n_position[2];
+	scanf("%i", &n_position[0]);
+  scanf("%i", &n_position[1]);
+  scanf("%i", &n_position[2]);
 
-	string fen[3][kNMaxFen];
+	char fen[3][kNMaxFen][80];
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < kNMaxFen; ++j) {
+      for (int k = 0; k < 80; ++k) {
+        fen[i][j][k] = 0;
+      }
+    }
+  }
+  while (getchar() != '\n');
+
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < n_position[i]; ++j) {
-			cin >> fen[i][j];
+      fgets(fen[i][j], 80, stdin);
 		}
 	}
 
@@ -32,31 +43,28 @@ void PlayBot() {
 			b.Initialize(fen[board_type][board_index]);
 
       int evaluation;
-
       double time_total = 0;
-
       duration<double> time;
-      time_point<high_resolution_clock> start_time;
-
+      time_point<high_resolution_clock> time_start;
 
       for (int i = 0; i < kNTests; ++i) {
 
         //nodes = 0;
 
-        start_time = high_resolution_clock::now();
+        time_start = high_resolution_clock::now();
 
         evaluation = Minimax(b, depth, -999999, 999999, b.side);
 
-        time = high_resolution_clock::now() - start_time;
+        time = high_resolution_clock::now() - time_start;
         time_total += time.count();
 
-        cout << "[" << i + 1 << "] " << time.count() << "\n";
+        printf("[%i] %.9f\n", i+1, time.count());
       }
 
       average_times[board_type][board_index] = time_total / kNTests;
-      cout << "\n\nAverage time: " << time_total / kNTests << " s\n\n";
+      printf("[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
 
-      //cout << "\n\nnodes: " << nodes;
+      //printf("nodes: %i\n\n\n\n", nodes);
     }
   }
 
@@ -64,24 +72,19 @@ void PlayBot() {
 
 
 
-  cout << "----------------------------------- DATA ------------------------------------------\n\n";
-  cout << "Average time taken for each position measured in seconds:\n\n\n";
+  printf("----------------------------------- AVERAGES ------------------------------------------\n\n");
   for (int i = 0; i < 3; ++i) {
 
-    if (i == 0) cout << "---------- Regular positions ----------\n\n";
-    else if (i == 1) cout << "---------- Tactic positions ----------\n\n";
-    else cout << "---------- Small positions ----------\n\n";
+    if (i == 0 && n_position[i]) printf("---------- REGULAR POSITIONS ----------\n\n");
+    else if (i == 1 && n_position[i]) printf("---------- TACTICAL POSITINOS ----------\n\n");
+    else if (n_position[i]) printf("---------- SMALL POSITIONS ----------\n\n");
 
     for (int j = 0; j < n_position[i]; ++j) {
-      cout << "[" << j + 1 << "] " << average_times[i][j] << "\n";
+      printf("[%i] %.9f\n", j + 1, average_times[i][j]);
     }
-
-    cout << "\n\n";
   }
-  cout << "----------------------------------- DATA ------------------------------------------\n\n\n\n";
+  printf("\n----------------------------------- AVERAGES ------------------------------------------\n\n\n\n");
 }
-
-
 
 
 
@@ -109,8 +112,6 @@ inline int Evaluate(Board& b) {
 
   return eval;
 }
-
-
 
 
 

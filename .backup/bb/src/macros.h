@@ -1,9 +1,8 @@
 #pragma once
 
-#include <iostream>
+#include <stdio.h>
 #include <algorithm>
 #include <chrono>
-#include <string>
 #include <map>
 
 
@@ -317,5 +316,5 @@ const int kBoardSmall[kNPositions][8][8] = {
 // Board
 struct Board {
 	U64 bb[13];
-	void Initialize(const std::string& kFen);
+	void Initialize(const char kFen[80]);
 };

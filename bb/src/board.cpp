@@ -1,6 +1,23 @@
 #include "board.h"
 
 
+const std::map<char, int> kIPiece = {
+  {'P', 1},
+  {'N', 2},
+  {'B', 3},
+  {'R', 4},
+  {'Q', 5},
+  {'K', 6},
+
+  {'p', 7},
+  {'n', 8},
+  {'b', 9},
+  {'r', 10},
+  {'q', 11},
+  {'k', 12}
+};
+
+
 
 void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 
@@ -226,20 +243,19 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 kUtil) {
 
 
 // Initialization
-inline int StringToSquare(const std::string& kStr) {
-	return (kStr[0] - 97) + (8 - (kStr[1] - '0')) * 8;
+inline int NotationToSquare(const char letter, const char number) {
+	return (letter - 97) + (8 - (number - '0')) * 8;
 }
 
-inline void ParseFen(Board& b, const std::string& kFen) {
+inline void ParseFen(Board& b, const char kFen[80]) {
 
 	for (int i = 0; i < 13; ++i) {
 		b.bb[i] = 0ULL;
 	}
 
-	int8_t stage = 0;
-	std::string en_passant_square;
-
+	int stage = 0;
 	int square = 0;
+
 	for (int i = 0; i < 100; ++i) {
 
 		if (kFen[i] == ' ') ++stage;
@@ -248,7 +264,7 @@ inline void ParseFen(Board& b, const std::string& kFen) {
 		if (!stage) {
 
 			if (kFen[i] == '/') continue;
-			else if (isdigit(kFen[i])) square += kFen[i] - '0';
+			else if (kFen[i] > 47 && kFen[i] < 58) square += kFen[i] - '0';
 			else {
 				b.bb[kIPiece.at(kFen[i])] |= 1ULL << square;
 				++square;
@@ -271,16 +287,13 @@ inline void ParseFen(Board& b, const std::string& kFen) {
 
 			if (kFen[i + 1] == '-') break;
 			else {
-				en_passant_square += kFen[i + 1];
-				en_passant_square += kFen[i + 2];
-
-				b.bb[0] |= StringToSquare(en_passant_square);
+				b.bb[0] |= NotationToSquare(kFen[i + 1], kFen[i + 2]);
 				break;
 			}
 		}
 	}
 }
 
-void Board::Initialize(const std::string& kFen) {
+void Board::Initialize(const char kFen[80]) {
 	ParseFen(*this, kFen);
 }

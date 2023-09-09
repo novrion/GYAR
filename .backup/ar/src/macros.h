@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+#include <stdio.h>
 #include <algorithm>
 #include <chrono>
 #include <map>
@@ -278,7 +278,7 @@ const int kBoardSmall[kNPositions][8][8] = {
 
 struct Board {
   int board[8][8];
-  void Initialize(const std::string& kFen);
+  void Initialize(const char kFen[100]);
 
   bool side;
 

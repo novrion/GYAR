@@ -1,6 +1,23 @@
 #include "board.h"
 
 
+const std::map<char, int> kIPiece = {
+  {'P', 1000},
+  {'N', 3000},
+  {'B', 3100},
+  {'R', 5000},
+  {'Q', 9000},
+  {'K', 100000},
+
+  {'p', -1000},
+  {'n', -3000},
+  {'b', -3100},
+  {'r', -5000},
+  {'q', -9000},
+  {'k', -100000}
+};
+
+
 
 void MakeMove(Board& b, Move& move) {
 
@@ -179,10 +196,10 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
 
 
 // Initialization
-inline void ParseFen(Board& b, const std::string& kFen) {
+inline void ParseFen(Board& b, const char kFen[80]) {
 
   for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 8; ++j) {
+    for (int j = 0; j < 8; ++j) { 
       b.board[i][j] = 0;
     }
   }
@@ -194,10 +211,10 @@ inline void ParseFen(Board& b, const std::string& kFen) {
   b.b_l_castle = false;
   b.b_r_castle = false;
 
-  int8_t stage = 0;
+  int stage = 0;
   int x = 0, y = 7;
 
-  for (int i = 0; i < 100; ++i) {
+  for (int i = 0; i < 80; ++i) {
 
     if (kFen[i] == ' ') ++stage;
 
@@ -206,9 +223,10 @@ inline void ParseFen(Board& b, const std::string& kFen) {
 
       if (kFen[i] == '/') {
         --y;
+        x = 0;
         continue;
       }
-      else if (isdigit(kFen[i])) x += kFen[i] - '0';
+      else if (kFen[i] > 47 && kFen[i] < 58) x += kFen[i] - '0';
       else {
         b.board[x++][y] = kIPiece.at(kFen[i]);
       }
@@ -238,6 +256,6 @@ inline void ParseFen(Board& b, const std::string& kFen) {
   }
 }
 
-void Board::Initialize(const std::string& kFen) {
+void Board::Initialize(const char kFen[80]) {
   ParseFen(*this, kFen);
 }

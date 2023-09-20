@@ -153,6 +153,39 @@ inline int Evaluate(const U64 kBB[13]) {
 
 
 
+inline void GetMoveCaptures(Board& b, U64 moves[100], const bool kSide) {
+
+	if (kSide) {
+		for (int i = 0; i < moves[99]; ++i) {
+			if (!GET_MOVE_CAPTURE(moves[i])) continue;
+			
+			for (int j = 7; j < 13; ++j) {
+				if (b.bb[j] & (1ULL << GET_MOVE_TARGET(moves[i]))) {
+					moves[i] &= kCaptureMask;
+					SET_MOVE_CAPTURE(moves[i], j);
+					break;
+				}
+			}
+		}
+	}
+
+	else {
+		for (int i = 0; i < moves[99]; ++i) {
+			if (!GET_MOVE_CAPTURE(moves[i])) continue;
+
+			for (int j = 1; j < 7; ++j) {
+				if (b.bb[j] & (1ULL << GET_MOVE_TARGET(moves[i]))) {
+					moves[i] &= kCaptureMask;
+					SET_MOVE_CAPTURE(moves[i], j);
+					break;
+				}
+			}
+		}
+	}
+
+	return;
+}
+
 // Minimax
 inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
@@ -168,7 +201,8 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 	GenerateMoves(b.bb, moves, kSide);
 
 	// Move Order
-	sort(moves, moves + moves[99], [](const U64 a, const U64 b) {return GET_MOVE_CAPTURE(a) > GET_MOVE_CAPTURE(b); });
+	GetMoveCaptures(b, moves, kSide);
+	sort(moves, moves + moves[99], [](const U64 c, const U64 d) {return kMVVLVA[GET_MOVE_PIECE(c)][GET_MOVE_CAPTURE(c)] > kMVVLVA[GET_MOVE_PIECE(d)][GET_MOVE_CAPTURE(d)]; });
 
 
 

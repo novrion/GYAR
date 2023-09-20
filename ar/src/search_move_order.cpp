@@ -4,6 +4,23 @@ using namespace std;
 using namespace std::chrono;
 
 
+const map<int, int> kIMVVLVA = {
+  {0, 0},
+  {1000, 1},
+  {3000, 2},
+  {3100, 3},
+  {5000, 4},
+  {9000, 5},
+  {100000, 6},
+  {-1000, 7},
+  {-3000, 8},
+  {-3100, 9},
+  {-5000, 10},
+  {-9000, 11},
+  {-100000, 12}
+};
+
+
 
 //int nodes = 0;
 void PlayBot() {
@@ -130,7 +147,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
   GenerateMoves(b, moves, kSide);
 
   // Move Order
-  sort(moves, moves + moves[99].from_x, [](Move& a, Move& b) {return a.capture > b.capture; });
+  sort(moves, moves + moves[99].from_x, [b](Move& c, Move& d) {return kMVVLVA[kIMVVLVA.at(b.board[c.from_x][c.from_y])][kIMVVLVA.at(c.capture)] > kMVVLVA[kIMVVLVA.at(b.board[d.from_x][d.from_y])][kIMVVLVA.at(d.capture)]; });
 
 
 

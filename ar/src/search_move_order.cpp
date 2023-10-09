@@ -26,14 +26,14 @@ const map<int, int> kIMVVLVA = {
 void PlayBot() {
 
   int depth;
-	scanf("%i", &depth);
+  scanf("%i", &depth);
 
-	int n_position[3];
-	scanf("%i", &n_position[0]);
+  int n_position[3];
+  scanf("%i", &n_position[0]);
   scanf("%i", &n_position[1]);
   scanf("%i", &n_position[2]);
 
-	char fen[3][kNMaxFen][80];
+  char fen[3][kNMaxFen][80];
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < kNMaxFen; ++j) {
       for (int k = 0; k < 80; ++k) {
@@ -41,30 +41,36 @@ void PlayBot() {
       }
     }
   }
+
   while (getchar() != '\n');
 
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < n_position[i]; ++j) {
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < n_position[i]; ++j) {
       fgets(fen[i][j], 80, stdin);
-		}
-	}
-
-
+    }
+  }
+ 
 
   Board b;
   double average_times[3][kNMaxFen];
 
   for (int board_type = 0; board_type < 3; ++board_type) {
+
     for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
 
-			b.Initialize(fen[board_type][board_index]);
+      b.Initialize(fen[board_type][board_index]);
 
       int evaluation;
       double time_total = 0;
       duration<double> time;
       time_point<high_resolution_clock> time_start;
 
+      printf("FEN: %s", fen[board_type][board_index]);
+      printf("        [0]         [1]         [2]         [3]         [4]         [5]         [6]         [7]         [8]         [9]");
+
       for (int i = 0; i < kNTests; ++i) {
+
+        if (i % 10 == 0) printf("\n[%i] ", i / 10);
 
         //nodes = 0;
 
@@ -75,29 +81,30 @@ void PlayBot() {
         time = high_resolution_clock::now() - time_start;
         time_total += time.count();
 
-        printf("[%i] %.9f\n", i+1, time.count());
+        printf("%.9f ", time.count());
       }
 
       average_times[board_type][board_index] = time_total / kNTests;
-      printf("[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
+
+      printf("\n[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
 
       //printf("nodes: %i\n\n\n\n", nodes);
     }
   }
 
-
-
-
+ 
 
   printf("----------------------------------- AVERAGES ------------------------------------------\n\n");
+
   for (int i = 0; i < 3; ++i) {
 
-    if (i == 0 && n_position[i]) printf("---------- REGULAR POSITIONS ----------\n\n");
-    else if (i == 1 && n_position[i]) printf("---------- TACTICAL POSITINOS ----------\n\n");
-    else if (n_position[i]) printf("---------- SMALL POSITIONS ----------\n\n");
+    if (i == 0 && n_position[i]) printf("\n---------- REGULAR POSITIONS ----------\n\n");
+    else if (i == 1 && n_position[i]) printf("\n---------- TACTICAL POSITINOS ----------\n\n");
+    else if (n_position[i]) printf("\n---------- SMALL POSITIONS ----------\n\n");
 
     for (int j = 0; j < n_position[i]; ++j) {
-      printf("[%i] %.9f\n", j + 1, average_times[i][j]);
+      if (j < 10) printf(" ");
+      printf("[%i] %.9f\n", j, average_times[i][j]);
     }
   }
   printf("\n----------------------------------- AVERAGES ------------------------------------------\n\n\n\n");

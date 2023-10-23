@@ -32,7 +32,7 @@ void PlayBot() {
       fgets(fen[i][j], 80, stdin);
     }
   }
- 
+
 
   Board b;
   double average_times[3][kNMaxFen];
@@ -75,7 +75,7 @@ void PlayBot() {
     }
   }
 
- 
+
 
   printf("----------------------------------- AVERAGES ------------------------------------------\n\n");
 
@@ -144,6 +144,8 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
+      if (moves[i].capture == -100000) return (100000 + kDepth);
+
       b_copy = b;
       MakeMove(b_copy, moves[i]);
 
@@ -162,6 +164,8 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
     int min_eval = 999999;
 
     for (int i = 0; i < moves[99].from_x; ++i) {
+
+      if (moves[i].capture == 100000) return (-100000 - kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);

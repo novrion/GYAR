@@ -14,8 +14,8 @@ inline int MaterialScore(const U64 kBB[13]);
 inline int PositionScore(const U64 kBB[13]);
 inline int Evaluate(const U64 kBB[13]);
 
-// *Only for Move Order search*
+// Updates all moves to get their captured piece. *Only for Move Order search*
 inline void GetMoveCaptures(Board& b, U64 moves[100], const bool kSide);
 
 // Search
-inline int Minimax( Board& b, const int kDepth, int alpha, int beta, const bool kSide );
+inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide);

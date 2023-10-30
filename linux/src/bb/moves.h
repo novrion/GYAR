@@ -36,7 +36,9 @@ int PopLsb(U64& b);
 
 void GenerateMoves(const U64 kBB[13], U64 moves[100], const bool kSide);
 
+// Checks diagonals (angled and straight) from a certain square and if it is attacked. Used for determining if castling should be allowed.
 inline bool CastleDiagonalInCheck(const U64 kBB[13], const U64 kWBlock, const U64 kBBlock, const int kSquare, const bool kSide);
+
 inline void AddMove(U64 moves[100], const U64 kMove);
 
 inline void WPawnMoves(const int kSquare, const U64 kWBlock, const U64 kBBlock, U64 moves[100], const int kEnPassantSquare);

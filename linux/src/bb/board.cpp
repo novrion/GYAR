@@ -2,19 +2,19 @@
 
 
 const std::map<char, int> kIPiece = {
-  {'P', 1},
-  {'N', 2},
-  {'B', 3},
-  {'R', 4},
-  {'Q', 5},
-  {'K', 6},
+	{'P', 1},
+	{'N', 2},
+	{'B', 3},
+	{'R', 4},
+	{'Q', 5},
+	{'K', 6},
 
-  {'p', 7},
-  {'n', 8},
-  {'b', 9},
-  {'r', 10},
-  {'q', 11},
-  {'k', 12}
+	{'p', 7},
+	{'n', 8},
+	{'b', 9},
+	{'r', 10},
+	{'q', 11},
+	{'k', 12}
 };
 
 
@@ -191,6 +191,7 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 kUtil) {
 			POP_BIT(bb[4], 61);
 			SET_BIT(bb[4], 63);
 		}
+
 
 		else if (castle == 3) {
 			POP_BIT(bb[12], 2);

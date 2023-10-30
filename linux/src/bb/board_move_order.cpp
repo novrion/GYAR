@@ -2,19 +2,19 @@
 
 
 const std::map<char, int> kIPiece = {
-  {'P', 1},
-  {'N', 2},
-  {'B', 3},
-  {'R', 4},
-  {'Q', 5},
-  {'K', 6},
+	{'P', 1},
+	{'N', 2},
+	{'B', 3},
+	{'R', 4},
+	{'Q', 5},
+	{'K', 6},
 
-  {'p', 7},
-  {'n', 8},
-  {'b', 9},
-  {'r', 10},
-  {'q', 11},
-  {'k', 12}
+	{'p', 7},
+	{'n', 8},
+	{'b', 9},
+	{'r', 10},
+	{'q', 11},
+	{'k', 12}
 };
 
 
@@ -61,7 +61,7 @@ void MakeMove(U64 bb[13], U64& move, const bool kSide) {
 		if (promotion) SET_BIT(bb[promotion], target);
 		else SET_BIT(bb[piece], target);
 
-        POP_BIT(bb[capture], target);
+		POP_BIT(bb[capture], target);
 	}
 
 	else if (castle) {

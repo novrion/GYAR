@@ -6,6 +6,7 @@
 
 void PlayBot();
 
+// Evaluation
 inline int Evaluate(Board& b);
 
 // Search

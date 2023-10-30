@@ -4,7 +4,9 @@
 
 void GenerateMoves(Board& b, Move moves[100], const bool kSide);
 
+// Checks diagonals (angled and straight) from a certain square and if it is attacked. Used for determining if castling should be allowed.
 inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide);
+
 inline void AddMove(Move moves[100], const Move kMove);
 
 inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPosY);

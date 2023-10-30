@@ -39,6 +39,7 @@ void GenerateMoves(Board& b, Move moves[100], const bool kSide) {
 inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
 
   if (kSide) {
+
     for (int x = kPosX, y = 0; x > -1 && y < 8; --x, ++y) {
       if (!b.board[x][y]) continue;
       else if (b.board[x][y] == -3000 || b.board[x][y] == -9000) return false;
@@ -59,6 +60,7 @@ inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
   }
 
   else {
+
     for (int x = kPosX, y = 7; x > -1 && y > -1; --x, --y) {
       if (!b.board[x][y]) continue;
       else if (b.board[x][y] == 3000 || b.board[x][y] == 9000) return false;

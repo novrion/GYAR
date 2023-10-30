@@ -7,4 +7,6 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
 
 // Initialization
 inline void ParseFen(Board& b, const char kFen[80]);
-void Board::Initialize(const char kFen[80]);
+
+
+// void Board::Initialize(const char kFen[80]);

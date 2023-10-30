@@ -88,7 +88,7 @@ void PlayBot() {
 			printf("[%i] %.9f\n", j, average_times[i][j]);
 		}
 	}
-	printf("\n----------------------------------- AVERAGES ------------------------------------------\n\n\n\n");
+	printf("\n\n----------------------------------- AVERAGES ------------------------------------------");
 }
 
 
@@ -158,7 +158,7 @@ inline int Evaluate(const U64 kBB[13]) {
 
 
 
-// Minimax
+// Search Function
 inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
 	//nodes += 1;

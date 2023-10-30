@@ -21,4 +21,6 @@ void UndoMove(U64 bb[13], const U64 kMove, const bool kSide, const U64 kUtil);
 // Initialization
 inline int NotationToSquare(const char letter, const char number);
 inline void ParseFen(Board& b, const char kFen[80]);
-void Board::Initialize(const char kFen[80]);
+
+
+//void Board::Initialize(const char kFen[80]);

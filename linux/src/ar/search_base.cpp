@@ -38,7 +38,6 @@ void PlayBot() {
   double average_times[3][kNMaxFen];
 
   for (int board_type = 0; board_type < 3; ++board_type) {
-
     for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
 
       b.Initialize(fen[board_type][board_index]);
@@ -68,7 +67,6 @@ void PlayBot() {
       }
 
       average_times[board_type][board_index] = time_total / kNTests;
-
       printf("\n[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
 
       //printf("nodes: %i\n\n\n\n", nodes);
@@ -90,7 +88,7 @@ void PlayBot() {
       printf("[%i] %.9f\n", j, average_times[i][j]);
     }
   }
-  printf("\n----------------------------------- AVERAGES ------------------------------------------\n\n\n\n");
+  printf("\n\n----------------------------------- AVERAGES ------------------------------------------");
 }
 
 
@@ -122,7 +120,7 @@ inline int Evaluate(Board& b) {
 
 
 
-// Minimax
+// Search Function
 inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
 
   //nodes += 1;

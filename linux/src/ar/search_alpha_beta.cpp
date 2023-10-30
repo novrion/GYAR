@@ -90,7 +90,27 @@ void PlayBot() {
       printf("[%i] %.9f\n", j, average_times[i][j]);
     }
   }
-  printf("\n\n----------------------------------- AVERAGES ------------------------------------------");
+  printf("\n\n----------------------------------- AVERAGES ------------------------------------------\n\n");
+
+  printf("\n\n\n\n\n---------- COPY PASTE ----------\n\n");
+
+  printf("TIME (s)\n");
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < n_position[i]; ++j) {
+      printf("%.9f          %s\n", average_times[i][j], fen[i][j]);
+    }
+    
+    printf("\n");
+  }
+
+  printf("\nFEN\n");
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < n_position[i]; ++j) {
+      printf("%s\n", fen[i][j]);
+    }
+    
+    printf("\n");
+  }
 }
 
 

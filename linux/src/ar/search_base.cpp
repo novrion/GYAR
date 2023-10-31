@@ -95,16 +95,7 @@ void PlayBot() {
   printf("TIME (s)\n");
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < n_position[i]; ++j) {
-      printf("%.9f          %s\n", average_times[i][j], fen[i][j]);
-    }
-    
-    printf("\n");
-  }
-
-  printf("\nFEN\n");
-  for (int i = 0; i < 3; ++i) {
-    for (int j = 0; j < n_position[i]; ++j) {
-      printf("%s\n", fen[i][j]);
+      printf("%.9f\n", average_times[i][j]);
     }
     
     printf("\n");

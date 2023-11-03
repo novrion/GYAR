@@ -1,1 +1,0 @@
-g++ -O3 -o run .\main.cpp .\moves.cpp .\board.cpp .\search.cpp

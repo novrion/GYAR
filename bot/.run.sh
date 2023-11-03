@@ -8,3 +8,4 @@
 ./bin/bb_undo_move.exe < data/in > data/out_bb_undo_move
 ./bin/bb_alpha_beta.exe < data/in > data/out_bb_alpha_beta
 ./bin/bb_move_order.exe < data/in > data/out_bb_move_order
+ 

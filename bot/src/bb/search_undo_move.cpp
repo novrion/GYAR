@@ -228,7 +228,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
 		for (int i = 0; i < moves[99]; ++i) {
 
-			//if (1ULL << GET_MOVE_TARGET(moves[i]) & b.bb[12]) return (kMaterialScore[6] + kDepth);
+			if (1ULL << GET_MOVE_TARGET(moves[i]) & b.bb[12]) return (kMaterialScore[6] + kDepth);
 
 			MakeMove(b.bb, moves[i], kSide);
 
@@ -250,7 +250,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
 		for (int i = 0; i < moves[99]; ++i) {
 
-			//	if (1ULL << GET_MOVE_TARGET(moves[i]) & b.bb[6]) return (kMaterialScore[12] - kDepth);
+			if (1ULL << GET_MOVE_TARGET(moves[i]) & b.bb[6]) return (kMaterialScore[12] - kDepth);
 
 			MakeMove(b.bb, moves[i], kSide);
 

@@ -8,100 +8,122 @@ using namespace std::chrono;
 //int nodes = 0;
 void PlayBot() {
 
-  int depth;
-  scanf("%i", &depth);
+	int depth;
+	scanf("%i", &depth);
 
-  int n_position[3];
-  scanf("%i", &n_position[0]);
-  scanf("%i", &n_position[1]);
-  scanf("%i", &n_position[2]);
+	int n_position[3];
+	scanf("%i", &n_position[0]);
+	scanf("%i", &n_position[1]);
+	scanf("%i", &n_position[2]);
 
-  char fen[3][kNMaxFen][80];
-  for (int i = 0; i < 3; ++i) {
-    for (int j = 0; j < kNMaxFen; ++j) {
-      for (int k = 0; k < 80; ++k) {
-        fen[i][j][k] = 0;
-      }
-    }
-  }
+	char fen[3][kNMaxFen][80];
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < kNMaxFen; ++j) {
+			for (int k = 0; k < 80; ++k) {
+				fen[i][j][k] = 0;
+			}
+		}
+	}
 
-  while (getchar() != '\n');
+	while (getchar() != '\n');
 
-  for (int i = 0; i < 3; ++i) {
-    for (int j = 0; j < n_position[i]; ++j) {
-      fgets(fen[i][j], 80, stdin);
-    }
-  }
-
-
-  Board b;
-  double average_times[3][kNMaxFen];
-
-  for (int board_type = 0; board_type < 3; ++board_type) {
-    for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
-
-      b.Initialize(fen[board_type][board_index]);
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < n_position[i]; ++j) {
+			fgets(fen[i][j], 80, stdin);
+		}
+	}
 
 
-      int evaluation;
-      double time_total = 0;
-      duration<double> time;
-      time_point<high_resolution_clock> time_start;
+	Board b;
+	double average_times[3][kNMaxFen];
+	double standard_deviations[3][kNMaxFen];
 
-      printf("FEN: %s", fen[board_type][board_index]);
-      printf("        [0]         [1]         [2]         [3]         [4]         [5]         [6]         [7]         [8]         [9]");
+	for (int board_type = 0; board_type < 3; ++board_type) {
+		for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
 
-      for (int i = 0; i < 100; ++i) {
-
-        if (i % 10 == 0) printf("\n[%i] ", i / 10);
-
-        //nodes = 0;
-
-        time_start = high_resolution_clock::now();
-
-        evaluation = Minimax(b, depth, -999999, 999999, b.side);
-
-        time = high_resolution_clock::now() - time_start;
-        time_total += time.count();
-
-        printf("%.9f ", time.count());
-      }
-
-      average_times[board_type][board_index] = time_total / kNTests;
-      printf("\n[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
-
-      // printf("FEN: %s", fen[board_type][board_index]);
-      // printf("nodes: %i\n\n", nodes);
-    }
-  }
+			b.Initialize(fen[board_type][board_index]);
 
 
+			int evaluation;
+			double time_total = 0;
+			duration<double> time;
+			time_point<high_resolution_clock> time_start;
+			double times[101];
 
-  printf("----------------------------------- AVERAGES ------------------------------------------\n\n");
+			printf("FEN: %s", fen[board_type][board_index]);
+			printf("        [0]         [1]         [2]         [3]         [4]         [5]         [6]         [7]         [8]         [9]");
 
-  for (int i = 0; i < 3; ++i) {
 
-    if (i == 0 && n_position[i]) printf("\n---------- REGULAR POSITIONS ----------\n\n");
-    else if (i == 1 && n_position[i]) printf("\n---------- TACTICAL POSITINOS ----------\n\n");
-    else if (n_position[i]) printf("\n---------- SMALL POSITIONS ----------\n\n");
+			for (int i = 0; i < 100; ++i) {
 
-    for (int j = 0; j < n_position[i]; ++j) {
-      if (j < 10) printf(" ");
-      printf("[%i] %.9f\n", j, average_times[i][j]);
-    }
-  }
-  printf("\n\n----------------------------------- AVERAGES ------------------------------------------\n\n");
+				if (i % 10 == 0) printf("\n[%i] ", i / 10);
 
-  printf("\n\n\n\n\n---------- COPY PASTE ----------\n\n");
+				//nodes = 0;
 
-  printf("TIME (s)\n");
-  for (int i = 0; i < 3; ++i) {
-    for (int j = 0; j < n_position[i]; ++j) {
-      printf("%.9f\n", average_times[i][j]);
-    }
+				time_start = high_resolution_clock::now();
 
-    printf("\n");
-  }
+				evaluation = Minimax(b, depth, -999999, 999999, b.side);
+
+				time = high_resolution_clock::now() - time_start;
+				time_total += time.count();
+				times[i] = time.count();
+
+				printf("%.9f ", times[i]);
+			}
+
+
+			// Average time
+			average_times[board_type][board_index] = time_total / kNTests;
+
+			// Standard deviation
+			double sum_deviation = 0;
+			for (int i = 0; i < 100; ++i) { sum_deviation += (times[i] - average_times[board_type][board_index]) * (times[i] - average_times[board_type][board_index]); }
+			standard_deviations[board_type][board_index] = sqrt(sum_deviation / 100);
+
+			printf("\n[AVERAGE] %.9f s\n", average_times[board_type][board_index]);
+			printf("[STANDARD DEVIATION] %.9f s\n\n", standard_deviations[board_type][board_index]);
+
+			// printf("FEN: %s", fen[board_type][board_index]);
+			// printf("nodes: %i\n\n", nodes);
+		}
+	}
+
+
+
+	printf("----------------------------------- AVERAGES ------------------------------------------\n\n");
+
+	for (int i = 0; i < 3; ++i) {
+
+		if (i == 0 && n_position[i]) printf("\n---------- REGULAR POSITIONS ----------\n\n");
+		else if (i == 1 && n_position[i]) printf("\n---------- TACTICAL POSITINOS ----------\n\n");
+		else if (n_position[i]) printf("\n---------- SMALL POSITIONS ----------\n\n");
+
+		for (int j = 0; j < n_position[i]; ++j) {
+			if (j < 10) printf(" ");
+			printf("[%i] %.9f\n", j, average_times[i][j]);
+		}
+	}
+	printf("\n\n----------------------------------- AVERAGES ------------------------------------------\n\n");
+
+	printf("\n\n\n\n\n---------- COPY PASTE ----------\n\n");
+
+	printf("TIME (s)\n");
+	for (int i = 0; i < 3; ++i) {
+	  for (int j = 0; j < n_position[i]; ++j) {
+	    printf("%.9f\n", average_times[i][j]);
+	  }
+
+	  printf("\n");
+	}
+
+	printf("\nSTANDARD DEVIATION (s)\n");
+	for (int i = 0; i < 3; ++i) {
+	  for (int j = 0; j < n_position[i]; ++j) {
+	    printf("%.9f\n", standard_deviations[i][j]);
+	  }
+
+	  printf("\n");
+	}
 }
 
 

@@ -36,6 +36,7 @@ void PlayBot() {
 
 	Board b;
 	double average_times[3][kNMaxFen];
+	double standard_deviations[3][kNMaxFen];
 
 	for (int board_type = 0; board_type < 3; ++board_type) {
 		for (int board_index = 0; board_index < n_position[board_type]; ++board_index) {
@@ -47,9 +48,11 @@ void PlayBot() {
 			double time_total = 0;
 			duration<double> time;
 			time_point<high_resolution_clock> time_start;
+			double times[101];
 
 			printf("FEN: %s", fen[board_type][board_index]);
 			printf("        [0]         [1]         [2]         [3]         [4]         [5]         [6]         [7]         [8]         [9]");
+
 
 			for (int i = 0; i < 100; ++i) {
 
@@ -63,12 +66,22 @@ void PlayBot() {
 
 				time = high_resolution_clock::now() - time_start;
 				time_total += time.count();
+				times[i] = time.count();
 
-				printf("%.9f ", time.count());
+				printf("%.9f ", times[i]);
 			}
 
+
+			// Average time
 			average_times[board_type][board_index] = time_total / kNTests;
-			printf("\n[AVERAGE] %.9f s\n\n", average_times[board_type][board_index]);
+
+			// Standard deviation
+			double sum_deviation = 0;
+			for (int i = 0; i < 100; ++i) { sum_deviation += (times[i] - average_times[board_type][board_index]) * (times[i] - average_times[board_type][board_index]); }
+			standard_deviations[board_type][board_index] = sqrt(sum_deviation / 100);
+
+			printf("\n[AVERAGE] %.9f s\n", average_times[board_type][board_index]);
+			printf("[STANDARD DEVIATION] %.9f s\n\n", standard_deviations[board_type][board_index]);
 
 			// printf("FEN: %s", fen[board_type][board_index]);
 			// printf("nodes: %i\n\n", nodes);
@@ -98,6 +111,15 @@ void PlayBot() {
 	for (int i = 0; i < 3; ++i) {
 	  for (int j = 0; j < n_position[i]; ++j) {
 	    printf("%.9f\n", average_times[i][j]);
+	  }
+
+	  printf("\n");
+	}
+
+	printf("\nSTANDARD DEVIATION (s)\n");
+	for (int i = 0; i < 3; ++i) {
+	  for (int j = 0; j < n_position[i]; ++j) {
+	    printf("%.9f\n", standard_deviations[i][j]);
 	  }
 
 	  printf("\n");

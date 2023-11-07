@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <map>
+#include <cmath>
 
 
 const int kNPositions = 10;

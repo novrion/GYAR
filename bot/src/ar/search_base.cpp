@@ -62,7 +62,7 @@ void PlayBot() {
 
 				time_start = high_resolution_clock::now();
 
-				evaluation = Minimax(b, depth, -999999, 999999, b.side);
+				evaluation = Minimax(b, depth, b.side);
 
 				time = high_resolution_clock::now() - time_start;
 				time_total += time.count();
@@ -167,7 +167,7 @@ inline int Evaluate(const Board& b) {
 
 
 // Search Function
-inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
+inline int Minimax(Board& b, const int kDepth, const bool kSide) {
 
   //nodes += 1;
 
@@ -188,12 +188,12 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == -100000) return (100000 + kDepth);
+      if (moves[i].capture == -10000) return (10000 + kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);
 
-      evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, false);
+      evaluation = Minimax(b_copy, kDepth - 1, false);
 
 
       if (evaluation > max_eval) max_eval = evaluation;
@@ -209,12 +209,12 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == 100000) return (-100000 - kDepth);
+      if (moves[i].capture == 10000) return (-10000 - kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);
 
-      evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, true);
+      evaluation = Minimax(b_copy, kDepth - 1, true);
 
 
       if (evaluation < min_eval) min_eval = evaluation;

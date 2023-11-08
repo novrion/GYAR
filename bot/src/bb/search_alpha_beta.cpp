@@ -1,4 +1,4 @@
-#include "search.h"
+#include "search_alpha_beta.h"
 
 using namespace std;
 using namespace std::chrono;

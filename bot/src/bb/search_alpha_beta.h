@@ -18,4 +18,4 @@ inline int Evaluate(const U64 kBB[13]);
 inline void GetMoveCaptures(Board& b, U64 moves[100], const bool kSide);
 
 // Search
-inline int Minimax(Board& b, const int kDepth, const bool kSide);
+inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide);

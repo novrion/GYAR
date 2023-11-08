@@ -1,4 +1,4 @@
-#include "search.h"
+#include "search_alpha_beta.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -188,7 +188,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == -100000) return (100000 + kDepth);
+      if (moves[i].capture == -10000) return (10000 + kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);
@@ -213,7 +213,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == 100000) return (-100000 - kDepth);
+      if (moves[i].capture == 10000) return (-10000 - kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);

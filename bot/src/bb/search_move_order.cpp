@@ -1,7 +1,25 @@
-#include "search.h"
+#include "search_alpha_beta.h"
 
 using namespace std;
 using namespace std::chrono;
+
+
+int MVVLVA[13][13] = {
+  0,    0,   0,   0,   0,   0,   0,    0,   0,   0,   0,   0,   0,
+  0,  105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605,
+  0,  104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604,
+  0,  103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603,
+  0,  102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602,
+  0,  101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601,
+  0,  100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600,
+
+  0,  105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605,
+  0,  104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604,
+  0,  103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603,
+  0,  102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602,
+  0,  101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601,
+  0,  100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600
+};
 
 
 
@@ -251,7 +269,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
 	// Necessary for if king capture !
 	GetMoveCaptures(b, moves, kSide);
-	sort(moves, moves + moves[99], [](const U64 c, const U64 d) {return kMVVLVA[GET_MOVE_PIECE(c)][GET_MOVE_CAPTURE(c)] > kMVVLVA[GET_MOVE_PIECE(d)][GET_MOVE_CAPTURE(d)]; });
+	sort(moves, moves + moves[99], [](const U64 c, const U64 d) {return MVVLVA[GET_MOVE_PIECE(c)][GET_MOVE_CAPTURE(c)] > MVVLVA[GET_MOVE_PIECE(d)][GET_MOVE_CAPTURE(d)]; });
 
 
 

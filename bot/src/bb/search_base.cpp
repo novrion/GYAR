@@ -62,7 +62,7 @@ void PlayBot() {
 
 				time_start = high_resolution_clock::now();
 
-				evaluation = Minimax(b, depth, -999999, 999999, GET_UTILITY_SIDE(b.bb[0]));
+				evaluation = Minimax(b, depth, GET_UTILITY_SIDE(b.bb[0]));
 
 				time = high_resolution_clock::now() - time_start;
 				time_total += time.count();
@@ -236,7 +236,7 @@ inline void GetMoveCaptures(Board& b, U64 moves[100], const bool kSide) {
 }
 
 // Search Function
-inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide) {
+inline int Minimax(Board& b, const int kDepth, const bool kSide) {
 
 	//nodes += 1;
 
@@ -265,7 +265,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 			b_copy = b;
 			MakeMove(b_copy.bb, moves[i], kSide);
 
-			evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, false);
+			evaluation = Minimax(b_copy, kDepth - 1, false);
 
 
 			if (evaluation > max_eval) max_eval = evaluation;
@@ -286,7 +286,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 			b_copy = b;
 			MakeMove(b_copy.bb, moves[i], kSide);
 
-			evaluation = Minimax(b_copy, kDepth - 1, alpha, beta, true);
+			evaluation = Minimax(b_copy, kDepth - 1, true);
 
 
 			if (evaluation < min_eval) min_eval = evaluation;

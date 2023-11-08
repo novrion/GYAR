@@ -1,24 +1,27 @@
-#include "search.h"
+#include "search_alpha_beta.h"
 
 using namespace std;
 using namespace std::chrono;
 
 
-const map<int, int> kIMVVLVA = {
-  {0, 0},
-  {1000, 1},
-  {3000, 2},
-  {3100, 3},
-  {5000, 4},
-  {9000, 5},
-  {100000, 6},
-  {-1000, 7},
-  {-3000, 8},
-  {-3100, 9},
-  {-5000, 10},
-  {-9000, 11},
-  {-100000, 12}
-};
+int MVVLVA[2001][2001];
+
+
+
+inline void InitializeMVVLVA(int hash[2001][2001]) {
+	hash[1010][1010] = 105; hash[1010][1030] = 205; hash[1010][1031] = 305; hash[1010][1050] = 405; hash[1010][1090] = 505; hash[1010][2000] = 605; hash[1010][990] = 105; hash[1010][970] = 205; hash[1010][969] = 305; hash[1010][950] = 405; hash[1010][910] = 505; hash[1010][0] = 605; 
+	hash[1030][1010] = 104; hash[1030][1030] = 204; hash[1030][1031] = 304; hash[1030][1050] = 404; hash[1030][1090] = 504; hash[1030][2000] = 604; hash[1030][990] = 104; hash[1030][970] = 204; hash[1030][969] = 304; hash[1030][950] = 404; hash[1030][910] = 504; hash[1030][0] = 604; 
+	hash[1031][1010] = 103; hash[1031][1030] = 203; hash[1031][1031] = 303; hash[1031][1050] = 403; hash[1031][1090] = 503; hash[1031][2000] = 603; hash[1031][990] = 103; hash[1031][970] = 203; hash[1031][969] = 303; hash[1031][950] = 403; hash[1031][910] = 503; hash[1031][0] = 603; 
+	hash[1050][1010] = 102; hash[1050][1030] = 202; hash[1050][1031] = 302; hash[1050][1050] = 402; hash[1050][1090] = 502; hash[1050][2000] = 602; hash[1050][990] = 102; hash[1050][970] = 202; hash[1050][969] = 302; hash[1050][950] = 402; hash[1050][910] = 502; hash[1050][0] = 602; 
+	hash[1090][1010] = 101; hash[1090][1030] = 201; hash[1090][1031] = 301; hash[1090][1050] = 401; hash[1090][1090] = 501; hash[1090][2000] = 601; hash[1090][990] = 101; hash[1090][970] = 201; hash[1090][969] = 301; hash[1090][950] = 401; hash[1090][910] = 501; hash[1090][0] = 601; 
+	hash[2000][1010] = 100; hash[2000][1030] = 200; hash[2000][1031] = 300; hash[2000][1050] = 400; hash[2000][1090] = 500; hash[2000][2000] = 600; hash[2000][990] = 100; hash[2000][970] = 200; hash[2000][969] = 300; hash[2000][950] = 400; hash[2000][910] = 500; hash[2000][0] = 600; 
+	hash[990][1010] = 105; hash[990][1030] = 205; hash[990][1031] = 305; hash[990][1050] = 405; hash[990][1090] = 505; hash[990][2000] = 605; hash[990][990] = 105; hash[990][970] = 205; hash[990][969] = 305; hash[990][950] = 405; hash[990][910] = 505; hash[990][0] = 605; 
+	hash[970][1010] = 104; hash[970][1030] = 204; hash[970][1031] = 304; hash[970][1050] = 404; hash[970][1090] = 504; hash[970][2000] = 604; hash[970][990] = 104; hash[970][970] = 204; hash[970][969] = 304; hash[970][950] = 404; hash[970][910] = 504; hash[970][0] = 604; 
+	hash[969][1010] = 103; hash[969][1030] = 203; hash[969][1031] = 303; hash[969][1050] = 403; hash[969][1090] = 503; hash[969][2000] = 603; hash[969][990] = 103; hash[969][970] = 203; hash[969][969] = 303; hash[969][950] = 403; hash[969][910] = 503; hash[969][0] = 603; 
+	hash[950][1010] = 102; hash[950][1030] = 202; hash[950][1031] = 302; hash[950][1050] = 402; hash[950][1090] = 502; hash[950][2000] = 602; hash[950][990] = 102; hash[950][970] = 202; hash[950][969] = 302; hash[950][950] = 402; hash[950][910] = 502; hash[950][0] = 602; 
+	hash[910][1010] = 101; hash[910][1030] = 201; hash[910][1031] = 301; hash[910][1050] = 401; hash[910][1090] = 501; hash[910][2000] = 601; hash[910][990] = 101; hash[910][970] = 201; hash[910][969] = 301; hash[910][950] = 401; hash[910][910] = 501; hash[910][0] = 601; 
+	hash[0][1010] = 100; hash[0][1030] = 200; hash[0][1031] = 300; hash[0][1050] = 400; hash[0][1090] = 500; hash[0][2000] = 600; hash[0][990] = 100; hash[0][970] = 200; hash[0][969] = 300; hash[0][950] = 400; hash[0][910] = 500; hash[0][0] = 600; 
+}
 
 
 
@@ -52,6 +55,7 @@ void PlayBot() {
 
 
 	Board b;
+	InitializeMVVLVA(MVVLVA);
 	double average_times[3][kNMaxFen];
 	double standard_deviations[3][kNMaxFen];
 
@@ -198,8 +202,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
   GenerateMoves(b, moves, kSide);
 
   // Move Order
-  sort(moves, moves + moves[99].from_x, [b](Move& c, Move& d) {return kMVVLVA[kIMVVLVA.at(b.board[c.from_x][c.from_y])][kIMVVLVA.at(c.capture)] > kMVVLVA[kIMVVLVA.at(b.board[d.from_x][d.from_y])][kIMVVLVA.at(d.capture)]; });
-
+  sort(moves, moves + moves[99].from_x, [b](Move& c, Move& d) {return MVVLVA[1000 + b.board[c.from_x][c.from_y] / 10][1000 + c.capture / 10] > MVVLVA[1000 + b.board[d.from_x][d.from_y] / 10][1000 + d.capture / 10]; });
 
 
 
@@ -209,7 +212,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == -100000) return (100000 + kDepth);
+      if (moves[i].capture == -10000) return (10000 + kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);
@@ -234,7 +237,7 @@ inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool k
 
     for (int i = 0; i < moves[99].from_x; ++i) {
 
-      if (moves[i].capture == 100000) return (-100000 - kDepth);
+      if (moves[i].capture == 10000) return (-10000 - kDepth);
 
       b_copy = b;
       MakeMove(b_copy, moves[i]);

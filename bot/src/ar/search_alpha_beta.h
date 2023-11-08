@@ -10,4 +10,4 @@ void PlayBot();
 inline int Evaluate(const Board& b);
 
 // Search
-inline int Minimax(Board& b, const int kDepth, const bool kSide);
+inline int Minimax(Board& b, const int kDepth, int alpha, int beta, const bool kSide);

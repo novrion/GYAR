@@ -2,19 +2,19 @@
 
 
 const std::map<char, int> kIPiece = {
-  {'P', 1000},
-  {'N', 3000},
-  {'B', 3100},
-  {'R', 5000},
-  {'Q', 9000},
-  {'K', 100000},
+  {'P', 100},
+  {'N', 300},
+  {'B', 310},
+  {'R', 500},
+  {'Q', 900},
+  {'K', 10000},
 
-  {'p', -1000},
-  {'n', -3000},
-  {'b', -3100},
-  {'r', -5000},
-  {'q', -9000},
-  {'k', -100000}
+  {'p', -100},
+  {'n', -300},
+  {'b', -310},
+  {'r', -500},
+  {'q', -900},
+  {'k', -10000}
 };
 
 
@@ -25,21 +25,21 @@ void MakeMove(Board& b, Move& move) {
   b.en_passant_x = -1;
 
   // Update Rook Moved Flag
-  if (b.board[move.from_x][move.from_y] == 5000) {
+  if (b.board[move.from_x][move.from_y] == 500) {
     if (move.from_x == 0) b.w_l_castle = false;
     else if (move.from_x == 7) b.w_r_castle = false;
   }
-  else if (b.board[move.from_x][move.from_y] == -5000) {
+  else if (b.board[move.from_x][move.from_y] == -500) {
     if (move.from_x == 0) b.b_l_castle = false;
     else if (move.from_x == 7) b.b_r_castle = false;
   }
 
   //Update King Moved Flag
-  if (b.board[move.from_x][move.from_y] == 100000) {
+  if (b.board[move.from_x][move.from_y] == 10000) {
     b.w_l_castle = false;
     b.w_r_castle = false;
   }
-  else if (b.board[move.from_x][move.from_y] == -100000) {
+  else if (b.board[move.from_x][move.from_y] == -10000) {
     b.b_l_castle = false;
     b.b_r_castle = false;
   }
@@ -50,38 +50,38 @@ void MakeMove(Board& b, Move& move) {
     if (move.castle == 1) {
 
       b.board[4][0] = 0;
-      b.board[2][0] = 100000;
+      b.board[2][0] = 10000;
 
       b.board[0][0] = 0;
-      b.board[3][0] = 5000;
+      b.board[3][0] = 500;
     }
 
     else if (move.castle == 2) {
 
       b.board[4][0] = 0;
-      b.board[6][0] = 100000;
+      b.board[6][0] = 10000;
 
       b.board[7][0] = 0;
-      b.board[5][0] = 5000;
+      b.board[5][0] = 500;
     }
 
 
     else if (move.castle == 3) {
 
       b.board[4][7] = 0;
-      b.board[2][7] = -100000;
+      b.board[2][7] = -10000;
 
       b.board[0][7] = 0;
-      b.board[3][7] = -5000;
+      b.board[3][7] = -500;
     }
 
     else {
 
       b.board[4][7] = 0;
-      b.board[6][7] = -100000;
+      b.board[6][7] = -10000;
 
       b.board[7][7] = 0;
-      b.board[5][7] = -5000;
+      b.board[5][7] = -500;
     }
   }
 
@@ -131,43 +131,43 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
   if (move.castle) {
 
     if (move.castle == 1) {
-      b.board[4][0] = 100000;
+      b.board[4][0] = 10000;
       b.board[2][0] = 0;
 
-      b.board[0][0] = 5000;
+      b.board[0][0] = 500;
       b.board[3][0] = 0;
     }
 
     else if (move.castle == 2) {
-      b.board[4][0] = 100000;
+      b.board[4][0] = 10000;
       b.board[6][0] = 0;
 
-      b.board[7][0] = 5000;
+      b.board[7][0] = 500;
       b.board[5][0] = 0;
     }
 
 
     else if (move.castle == 3) {
-      b.board[4][7] = -100000;
+      b.board[4][7] = -10000;
       b.board[2][7] = 0;
 
-      b.board[0][7] = -5000;
+      b.board[0][7] = -500;
       b.board[3][7] = 0;
     }
 
     else {
-      b.board[4][7] = -100000;
+      b.board[4][7] = -10000;
       b.board[6][7] = 0;
 
-      b.board[7][7] = -5000;
+      b.board[7][7] = -500;
       b.board[5][7] = 0;
     }
   }
 
   else if (move.promotion) {
 
-    if (move.to_y == 7) b.board[move.from_x][move.from_y] = 1000;
-    else b.board[move.from_x][move.from_y] = -1000;
+    if (move.to_y == 7) b.board[move.from_x][move.from_y] = 100;
+    else b.board[move.from_x][move.from_y] = -100;
 
     b.board[move.to_x][move.to_y] = move.capture;
   }
@@ -176,13 +176,13 @@ void UndoMove(Board& b, Move& move, const int en_passant_x, const int en_passant
 
     if (move.to_y > move.from_y) {
       b.board[move.to_x][move.to_y] = 0;
-      b.board[move.from_x][move.from_y] = 1000;
-      b.board[move.to_x][move.from_y] = -1000;
+      b.board[move.from_x][move.from_y] = 100;
+      b.board[move.to_x][move.from_y] = -100;
     }
     else {
       b.board[move.to_x][move.to_y] = 0;
-      b.board[move.from_x][move.from_y] = -1000;
-      b.board[move.to_x][move.from_y] = 1000;
+      b.board[move.from_x][move.from_y] = -100;
+      b.board[move.to_x][move.from_y] = 100;
     }
   }
 

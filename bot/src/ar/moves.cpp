@@ -10,12 +10,12 @@ void GenerateMoves(Board& b, Move moves[100], const bool kSide) {
     for (int x = 0; x < 8; x++) {
       for (int y = 0; y < 8; y++) {
         if (b.board[x][y] == 0) continue;
-        else if (b.board[x][y] == 1000) WPawnMoves(b, moves, x, y);
-        else if (b.board[x][y] == 3000) WKnightMoves(b, moves, x, y);
-        else if (b.board[x][y] == 3100) WBishopMoves(b, moves, x, y);
-        else if (b.board[x][y] == 5000) WRookMoves(b, moves, x, y);
-        else if (b.board[x][y] == 9000) WQueenMoves(b, moves, x, y);
-        else if (b.board[x][y] == 100000) WKingMoves(b, moves, x, y);
+        else if (b.board[x][y] == 100) WPawnMoves(b, moves, x, y);
+        else if (b.board[x][y] == 300) WKnightMoves(b, moves, x, y);
+        else if (b.board[x][y] == 310) WBishopMoves(b, moves, x, y);
+        else if (b.board[x][y] == 500) WRookMoves(b, moves, x, y);
+        else if (b.board[x][y] == 900) WQueenMoves(b, moves, x, y);
+        else if (b.board[x][y] == 10000) WKingMoves(b, moves, x, y);
       }
     }
   }
@@ -24,12 +24,12 @@ void GenerateMoves(Board& b, Move moves[100], const bool kSide) {
     for (int x = 0; x < 8; x++) {
       for (int y = 0; y < 8; y++) {
         if (b.board[x][y] == 0) continue;
-        else if (b.board[x][y] == -1000) BPawnMoves(b, moves, x, y);
-        else if (b.board[x][y] == -3000) BKnightMoves(b, moves, x, y);
-        else if (b.board[x][y] == -3100) BBishopMoves(b, moves, x, y);
-        else if (b.board[x][y] == -5000) BRookMoves(b, moves, x, y);
-        else if (b.board[x][y] == -9000) BQueenMoves(b, moves, x, y);
-        else if (b.board[x][y] == -100000) BKingMoves(b, moves, x, y);
+        else if (b.board[x][y] == -100) BPawnMoves(b, moves, x, y);
+        else if (b.board[x][y] == -300) BKnightMoves(b, moves, x, y);
+        else if (b.board[x][y] == -310) BBishopMoves(b, moves, x, y);
+        else if (b.board[x][y] == -500) BRookMoves(b, moves, x, y);
+        else if (b.board[x][y] == -900) BQueenMoves(b, moves, x, y);
+        else if (b.board[x][y] == -10000) BKingMoves(b, moves, x, y);
       }
     }
   }
@@ -42,19 +42,19 @@ inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
 
     for (int x = kPosX - 1, y = 1; x > -1 && y < 8; --x, ++y) {
       if (!b.board[x][y]) continue;
-      else if (b.board[x][y] == -3100 || b.board[x][y] == -9000) return false;
+      else if (b.board[x][y] == -310 || b.board[x][y] == -900) return false;
       else break;
     }
 
     for (int y = 1; y < 8; ++y) {
       if (!b.board[kPosX][y]) continue;
-      else if (b.board[kPosX][y] == -5000 || b.board[kPosX][y] == -9000) return false;
+      else if (b.board[kPosX][y] == -500 || b.board[kPosX][y] == -900) return false;
       else break;
     }
 
     for (int x = kPosX + 1, y = 1; x < 8 && y < 8; ++x, ++y) {
       if (!b.board[x][y]) continue;
-      else if (b.board[x][y] == -3100 || b.board[x][y] == -9000) return false;
+      else if (b.board[x][y] == -310 || b.board[x][y] == -900) return false;
       else break;
     }
   }
@@ -63,19 +63,19 @@ inline bool CastleDiagonalInCheck(Board& b, const int kPosX, const bool kSide) {
 
     for (int x = kPosX - 1, y = 6; x > -1 && y > -1; --x, --y) {
       if (!b.board[x][y]) continue;
-      else if (b.board[x][y] == 3100 || b.board[x][y] == 9000) return false;
+      else if (b.board[x][y] == 310 || b.board[x][y] == 900) return false;
       else break;
     }
 
     for (int y = 6; y > -1; --y) {
       if (!b.board[kPosX][y]) continue;
-      else if (b.board[kPosX][y] == 5000 || b.board[kPosX][y] == 9000) return false;
+      else if (b.board[kPosX][y] == 500 || b.board[kPosX][y] == 900) return false;
       else break;
     }
 
     for (int x = kPosX + 1, y = 6; x < 8 && y > -1; ++x, --y) {
       if (!b.board[x][y]) continue;
-      else if (b.board[x][y] == 3100 || b.board[x][y] == 9000) return false;
+      else if (b.board[x][y] == 310 || b.board[x][y] == 900) return false;
       else break;
     }
   }
@@ -94,24 +94,24 @@ inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
   if (kPosY == 6) {
 
     if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY + 1] < 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, b.board[kPosX + 1][kPosY + 1], false, false, 900, 0));
     }
 
     if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY + 1] < 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, b.board[kPosX - 1][kPosY + 1], false, false, 900, 0));
     }
 
     if (!b.board[kPosX][kPosY + 1]) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY + 1, 0, false, false, 900, 0));
     }
   }
 
@@ -131,11 +131,11 @@ inline void WPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
     if (b.en_passant_x != -1 && b.en_passant_y == kPosY) {
 
       if (kPosX == b.en_passant_x + 1) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, 1000, true, false, 0, 0));
+        AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY + 1, 100, true, false, 0, 0));
 
       }
       else if (kPosX == b.en_passant_x - 1) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, 1000, true, false, 0, 0));
+        AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY + 1, 100, true, false, 0, 0));
       }
     }
   }
@@ -496,23 +496,23 @@ inline void WKingMoves(Board& b, Move moves[100], const int kPosX, const int kPo
 
 
   // Castle
-  if (b.w_l_castle && b.board[0][0] == 5000 && !b.board[1][0] && !b.board[2][0] && !b.board[3][0]) {
+  if (b.w_l_castle && b.board[0][0] == 500 && !b.board[1][0] && !b.board[2][0] && !b.board[3][0]) {
     if (CastleDiagonalInCheck(b, 1, true) && CastleDiagonalInCheck(b, 2, true) && CastleDiagonalInCheck(b, 3, true) && CastleDiagonalInCheck(b, 4, true) &&
-      !(b.board[0][1] == -1000 || b.board[1][1] == -1000 || b.board[2][1] == -1000 || b.board[3][1] == -1000 || b.board[4][1] == -1000 || b.board[5][1] == -1000) &&
-      !(b.board[0][2] == -3000 || b.board[1][2] == -3000 || b.board[2][2] == -3000 || b.board[3][2] == -3000 || b.board[4][2] == -3000 || b.board[5][2] == -3000) &&
-      !(b.board[0][1] == -3000 || b.board[1][1] == -3000 || b.board[2][1] == -3000 || b.board[3][1] == -3000 || b.board[4][1] == -3000 || b.board[5][1] == -3000 || b.board[6][1] == -3000) &&
-      !(b.board[1][1] == -100000 || b.board[2][1] == -100000)) {
+      !(b.board[0][1] == -100 || b.board[1][1] == -100 || b.board[2][1] == -100 || b.board[3][1] == -100 || b.board[4][1] == -100 || b.board[5][1] == -100) &&
+      !(b.board[0][2] == -300 || b.board[1][2] == -300 || b.board[2][2] == -300 || b.board[3][2] == -300 || b.board[4][2] == -300 || b.board[5][2] == -300) &&
+      !(b.board[0][1] == -300 || b.board[1][1] == -300 || b.board[2][1] == -300 || b.board[3][1] == -300 || b.board[4][1] == -300 || b.board[5][1] == -300 || b.board[6][1] == -300) &&
+      !(b.board[1][1] == -10000 || b.board[2][1] == -10000)) {
 
       AddMove(moves, Move(kPosX, kPosY, kPosX - 2, kPosY, 0, false, false, 0, 1));
     }
   }
 
-  if (b.w_r_castle && b.board[7][0] == 5000 && !b.board[5][0] && !b.board[6][0]) {
+  if (b.w_r_castle && b.board[7][0] == 500 && !b.board[5][0] && !b.board[6][0]) {
     if (CastleDiagonalInCheck(b, 4, true) && CastleDiagonalInCheck(b, 5, true) && CastleDiagonalInCheck(b, 6, true) &&
-      !(b.board[3][1] == -1000 || b.board[4][1] == -1000 || b.board[5][1] == -1000 || b.board[6][1] == -1000 || b.board[7][1] == -1000) &&
-      !(b.board[3][2] == -3000 || b.board[4][2] == -3000 || b.board[5][2] == -3000 || b.board[6][2] == -3000 || b.board[7][2] == -3000) &&
-      !(b.board[2][1] == -3000 || b.board[3][1] == -3000 || b.board[4][1] == -3000 || b.board[6][1] == -3000 || b.board[7][1] == -3000) &&
-      !(b.board[6][1] == -100000)) {
+      !(b.board[3][1] == -100 || b.board[4][1] == -100 || b.board[5][1] == -100 || b.board[6][1] == -100 || b.board[7][1] == -100) &&
+      !(b.board[3][2] == -300 || b.board[4][2] == -300 || b.board[5][2] == -300 || b.board[6][2] == -300 || b.board[7][2] == -300) &&
+      !(b.board[2][1] == -300 || b.board[3][1] == -300 || b.board[4][1] == -300 || b.board[6][1] == -300 || b.board[7][1] == -300) &&
+      !(b.board[6][1] == -10000)) {
 
       AddMove(moves, Move(kPosX, kPosY, kPosX + 2, kPosY, 0, false, false, 0, 2));
     }
@@ -525,24 +525,24 @@ inline void BPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
   if (kPosY == 1) {
 
     if (kPosX + 1 < 8 && b.board[kPosX + 1][kPosY - 1] > 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, b.board[kPosX + 1][kPosY - 1], false, false, -900, 0));
     }
 
     if (kPosX - 1 > -1 && b.board[kPosX - 1][kPosY - 1] > 0) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, b.board[kPosX - 1][kPosY - 1], false, false, -900, 0));
     }
 
     if (!b.board[kPosX][kPosY - 1]) {
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -3000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -3100, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -5000, 0));
-      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -9000, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -300, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -310, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -500, 0));
+      AddMove(moves, Move(kPosX, kPosY, kPosX, kPosY - 1, 0, false, false, -900, 0));
     }
   }
 
@@ -562,10 +562,10 @@ inline void BPawnMoves(Board& b, Move moves[100], const int kPosX, const int kPo
     if (b.en_passant_x != -1 && b.en_passant_y == kPosY) {
 
       if (kPosX == b.en_passant_x + 1) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, -1000, true, false, 0, 0));
+        AddMove(moves, Move(kPosX, kPosY, kPosX - 1, kPosY - 1, -100, true, false, 0, 0));
       }
       else if (kPosX == b.en_passant_x - 1) {
-        AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, -1000, true, false, 0, 0));
+        AddMove(moves, Move(kPosX, kPosY, kPosX + 1, kPosY - 1, -100, true, false, 0, 0));
       }
     }
   }
@@ -926,23 +926,23 @@ inline void BKingMoves(Board& b, Move moves[100], const int kPosX, const int kPo
 
 
   // Castle
-  if (b.b_l_castle && b.board[0][7] == -5000 && !b.board[1][7] && !b.board[2][7] && !b.board[3][7]) {
+  if (b.b_l_castle && b.board[0][7] == -500 && !b.board[1][7] && !b.board[2][7] && !b.board[3][7]) {
     if (CastleDiagonalInCheck(b, 1, false) && CastleDiagonalInCheck(b, 2, false) && CastleDiagonalInCheck(b, 3, false) && CastleDiagonalInCheck(b, 4, false) &&
-      !(b.board[0][6] == 1000 || b.board[1][6] == 1000 || b.board[2][6] == 1000 || b.board[3][6] == 1000 || b.board[4][6] == 1000 || b.board[5][6] == 1000) &&
-      !(b.board[0][5] == 3000 || b.board[1][5] == 3000 || b.board[2][5] == 3000 || b.board[3][5] == 3000 || b.board[4][5] == 3000 || b.board[5][5] == 3000) &&
-      !(b.board[0][6] == 3000 || b.board[1][6] == 3000 || b.board[2][6] == 3000 || b.board[3][6] == 3000 || b.board[4][6] == 3000 || b.board[5][6] == 3000 || b.board[6][6] == 3000) &&
-      !(b.board[1][6] == 100000 || b.board[2][6] == 100000)) {
+      !(b.board[0][6] == 100 || b.board[1][6] == 100 || b.board[2][6] == 100 || b.board[3][6] == 100 || b.board[4][6] == 100 || b.board[5][6] == 100) &&
+      !(b.board[0][5] == 300 || b.board[1][5] == 300 || b.board[2][5] == 300 || b.board[3][5] == 300 || b.board[4][5] == 300 || b.board[5][5] == 300) &&
+      !(b.board[0][6] == 300 || b.board[1][6] == 300 || b.board[2][6] == 300 || b.board[3][6] == 300 || b.board[4][6] == 300 || b.board[5][6] == 300 || b.board[6][6] == 300) &&
+      !(b.board[1][6] == 10000 || b.board[2][6] == 10000)) {
 
       AddMove(moves, Move(kPosX, kPosY, kPosX - 2, kPosY, 0, false, false, 0, 3));
     }
   }
 
-  if (b.b_r_castle && b.board[7][7] == -5000 && !b.board[5][7] && !b.board[6][7]) {
+  if (b.b_r_castle && b.board[7][7] == -500 && !b.board[5][7] && !b.board[6][7]) {
     if (CastleDiagonalInCheck(b, 4, false) && CastleDiagonalInCheck(b, 5, false) && CastleDiagonalInCheck(b, 6, false) &&
-      !(b.board[3][6] == 1000 || b.board[4][6] == 1000 || b.board[5][6] == 1000 || b.board[6][6] == 1000 || b.board[7][6] == 1000) &&
-      !(b.board[3][5] == 3000 || b.board[4][5] == 3000 || b.board[5][5] == 3000 || b.board[6][5] == 3000 || b.board[7][5] == 3000) &&
-      !(b.board[2][6] == 3000 || b.board[3][6] == 3000 || b.board[4][6] == 3000 || b.board[6][6] == 3000 || b.board[7][6] == 3000) &&
-      !(b.board[6][6] == 100000)) {
+      !(b.board[3][6] == 100 || b.board[4][6] == 100 || b.board[5][6] == 100 || b.board[6][6] == 100 || b.board[7][6] == 100) &&
+      !(b.board[3][5] == 300 || b.board[4][5] == 300 || b.board[5][5] == 300 || b.board[6][5] == 300 || b.board[7][5] == 300) &&
+      !(b.board[2][6] == 300 || b.board[3][6] == 300 || b.board[4][6] == 300 || b.board[6][6] == 300 || b.board[7][6] == 300) &&
+      !(b.board[6][6] == 10000)) {
 
       AddMove(moves, Move(kPosX, kPosY, kPosX + 2, kPosY, 0, false, false, 0, 4));
     }

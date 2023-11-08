@@ -115,31 +115,42 @@ void PlayBot() {
 		else if (i == 1 && n_position[i]) printf("\n---------- TACTICAL POSITINOS ----------\n\n");
 		else if (n_position[i]) printf("\n---------- SMALL POSITIONS ----------\n\n");
 
+		printf("    [AVERAGE (s)]    [STANDARD DEVIATION (s)]\n");
+
 		for (int j = 0; j < n_position[i]; ++j) {
 			if (j < 10) printf(" ");
-			printf("[%i] %.9f\n", j, average_times[i][j]);
+			printf("[%i] %.9f          %.9f\n", j, average_times[i][j], standard_deviations[i][j]);
 		}
 	}
 	printf("\n\n----------------------------------- AVERAGES ------------------------------------------\n\n");
 
-	printf("\n\n\n\n\n---------- COPY PASTE ----------\n\n");
+	printf("\n\n\n\n---------- COPY PASTE ----------\n\n");
 
-	printf("TIME (s)\n");
-	for (int i = 0; i < 3; ++i) {
-	  for (int j = 0; j < n_position[i]; ++j) {
-	    printf("%.9f\n", average_times[i][j]);
-	  }
+	printf("AVERAGE AVERAGE TIMES (s)\n");
 
-	  printf("\n");
+	// Average average times
+	double final_averages[3];
+	for (int type = 0; type < 3; ++type) {
+
+		double sum_averages = 0;
+		for (int i = 0; i < n_position[type]; ++i) { sum_averages += average_times[type][i]; }
+		final_averages[type] = sum_averages / n_position[type];
+		
+		printf("%.9f\n", final_averages[type]);
 	}
 
-	printf("\nSTANDARD DEVIATION (s)\n");
-	for (int i = 0; i < 3; ++i) {
-	  for (int j = 0; j < n_position[i]; ++j) {
-	    printf("%.9f\n", standard_deviations[i][j]);
-	  }
+	printf("\n");
+	printf("AVERAGE STANDARD DEVIATIONS (s)\n");	
 
-	  printf("\n");
+	// Average standard deviations
+	double average_standard_deviations[3];
+	for (int type = 0; type < 3; ++type) {
+
+		double final_sum_deviation = 0;
+		for (int i = 0; i < n_position[type]; ++i) { final_sum_deviation += standard_deviations[type][i] * standard_deviations[type][i]; }
+		average_standard_deviations[type] = sqrt(final_sum_deviation / n_position[type]);
+
+		printf("%.9f\n", average_standard_deviations[type]);
 	}
 }
 

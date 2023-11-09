@@ -107,9 +107,9 @@ void PlayBot() {
 	}
 	printf("\n\n----------------------------------- AVERAGES ------------------------------------------\n\n");
 
-	printf("\n\n\n\n---------- COPY PASTE ----------\n\n");
+	printf("\n\n\n\n---------- SUMMARY ----------\n\n");
 
-	printf("AVERAGE AVERAGE TIMES (s)\n");
+	printf("[ar undo move] AVERAGE AVERAGE TIMES (s)\n");
 
 	// Average average times
 	double final_averages[3];
@@ -123,7 +123,7 @@ void PlayBot() {
 	}
 
 	printf("\n");
-	printf("AVERAGE STANDARD DEVIATIONS (s)\n");	
+	printf("[ar undo move] AVERAGE STANDARD DEVIATIONS (s)\n");	
 
 	// Average standard deviations
 	double average_standard_deviations[3];

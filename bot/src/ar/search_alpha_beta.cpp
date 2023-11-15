@@ -117,7 +117,6 @@ void PlayBot() {
 
 		printf("\n");
 	}
-	printf("\n");
 }
 
 

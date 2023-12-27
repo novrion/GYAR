@@ -9,6 +9,9 @@ Undo move, alpha beta pruning, and move order optimizations were tested on a two
 **undo_move** = engine with undo move optimization\
 **alpha_beta** = engine with alpha beta pruning optimization\
 **move_order** = engine with move order and alpha beta pruning optimizations
+# Result
+![average-relative-speed-ar](https://github.com/novrion/GYAR/assets/128396601/26925c01-3908-4c60-881e-0e48ed7986fe)
+![average-relative-speed-bb](https://github.com/novrion/GYAR/assets/128396601/afc93b66-86b8-425f-8df5-4ae340d64679)
 # Optimizations
 **Undo move** optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
 **Alpha beta** pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\

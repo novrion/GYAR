@@ -1,5 +1,5 @@
 # GYAR
-A dipoma project by Elias and Arvid in NA21MA at Norra Real gymnasium in Stockholm\
+A diploma project by Elias and Arvid in NA21MA at Norra Real gymnasium in Stockholm\
 The purpose of the research is to determine how effective different optimization techniques are for minimax chess engines\
 Undo move, alpha beta pruning, and move order optimizations were tested on a two dimensional 8x8 32-bit signed integer array represented engine and a 13 64-bit unsigned integer (bitboard) represented engine
 # Abbreviations

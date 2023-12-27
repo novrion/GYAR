@@ -10,9 +10,9 @@ Undo move, alpha beta pruning, and move order optimizations were tested on a two
 **alpha_beta** = engine with alpha beta pruning optimization\
 **move_order** = engine with move order and alpha beta pruning optimizations
 # Optimizations
-Undo move optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
-Alpha beta pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\
-Move order optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable piece first.
+**Undo move** optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
+**Alpha beta** pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\
+**Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable piece first.
 # Data
 The chess positions executed are located in **bot/data/in**\
 The final result is located in **bot/data/out**\

@@ -10,4 +10,4 @@ CPU model name: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
 (4 cores)
 
 g++ version: g++ (GCC) 13.2.1 20230801
-
+Compiled with O2 & std=c++17

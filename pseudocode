@@ -1,0 +1,110 @@
+# Pseudocode for the minimax search algorithm with different optimizations
+
+
+# Minimax Without Optimizations
+function Minimax(chess_board, depth, side)
+
+    if (depth == 0)
+        return Evaluation()
+
+    moves = GenerateMoves()
+
+    if side == white then
+        max = -INFINITY
+
+        for move in moves do
+            chess_board_copy = chess_board
+            MakeMove(chess_board_copy, move)
+
+            evaluation = Minimax(chess_board_copy, depth - 1, black)
+
+            if evaluation > max then
+                max = evaluation
+        return max
+    else
+        min = INFINITY
+
+        for move in moves do
+            chess_board_copy = chess_board
+            MakeMove(chess_board_copy, move)
+
+            evaluation = Minimax(chess_board_copy, depth - 1, white)
+
+            if evaluation < min then
+                min = evaluation
+        return min
+
+
+# Minimax With Undo Move Optimization
+function Minimax(chess_board, depth, side)
+
+    if (depth == 0)
+        return Evaluation()
+
+    moves = GenerateMoves()
+
+    if side == white then
+        max = -INFINITY
+
+        for move in moves do
+            MakeMove(chess_board, move)
+            evaluation = Minimax(chess_board, depth - 1, black)
+            UndoMove(chess_board, move)
+
+            if evaluation > max then
+                max = evaluation
+        return max
+    else
+        min = INFINITY
+
+        for move in moves do
+            MakeMove(chess_board, move)
+            evaluation = Minimax(chess_board, depth - 1, white)
+            UndoMove(chess_board, move)
+
+            if evaluation < min then
+                min = evaluation
+        return min
+
+
+# Minimax With Alpha Beta & Move Order Optimizations
+function Minimax(chess_board, depth, side, alpha, beta)
+
+    if (depth == 0)
+        return Evaluation()
+
+    moves = GenerateMoves()
+    SortMVVLVA(moves)
+
+    if side == white then
+        max = -INFINITY
+
+        for move in moves do
+            chess_board_copy = chess_board
+            MakeMove(chess_board_copy, move)
+
+            evaluation = Minimax(chess_board_copy, depth - 1, black)
+
+            if evaluation > max then
+                max = evaluation
+            if evaluation > alpha then
+                alpha = Evaluation
+            if beta <= alpha then
+                break
+        return max
+    else
+        min = INFINITY
+
+        for move in moves do
+            chess_board_copy = chess_board
+            MakeMove(chess_board_copy, move)
+
+            evaluation = Minimax(chess_board_copy, depth - 1, white)
+
+            if evaluation < min then
+                min = evaluation
+            if evaluation < beta then
+                beta = evaluation
+            if beta <= alpha then
+                break
+        return min

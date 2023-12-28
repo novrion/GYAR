@@ -32,7 +32,9 @@ Positions: **20** normal, **20** tactic, **20** end game\
 (x = execution time, μ = average execution time, N = number of tests)
 # Optimizations
 **Undo move** optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
+\
 **Alpha beta** pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\
+\
 **Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable pieces first.\
 The following image shows the **MVVLVA** matrix\
 **y-axis**: capturing piece\

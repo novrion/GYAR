@@ -1,5 +1,10 @@
 # Pseudocode for the minimax search algorithm with different optimizations
 
+# GenerateMoves(): Generates a list of all possible moves from a chess position
+# MakeMove(): Modifies a chess board according to a chess move
+# UndoMove(): Like MakeMove(), but reverses the move
+# SortMVVLVA(): Sorts a list of moves according to a Most Valuable Victim - Least Valuable Aggressor matrix
+
 
 # Minimax Without Optimizations
 function Minimax(chess_board, depth, side)

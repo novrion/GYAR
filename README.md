@@ -33,7 +33,12 @@ Positions: **20** normal, **20** tactic, **20** end game\
 # Optimizations
 **Undo move** optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
 **Alpha beta** pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\
-**Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable pieces first.
+**Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable pieces first.\
+The following image shows the **MVVLVA** matrix\
+**y-axis**: capturing piece\
+**x-axis**: captured piece\
+If **no piece** is captured the value given is **0**\
+![MVVLVA](https://github.com/novrion/GYAR/assets/128396601/328d8d47-b6f5-4c52-ac2d-a06c78c16717)
 # Data
 The chess positions executed are located in **bot/data/in**\
 The final result is located in **bot/data/out**\

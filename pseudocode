@@ -4,6 +4,7 @@
 # MakeMove(): Modifies a chess board according to a chess move
 # UndoMove(): Like MakeMove(), but reverses the move
 # SortMVVLVA(): Sorts a list of moves according to a Most Valuable Victim - Least Valuable Aggressor matrix
+# Evaluation(): Returns an integer determining the evaluation of a chess position. A greater value is better for white, a lower value is better for black.
 
 
 # Minimax Without Optimizations

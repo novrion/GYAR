@@ -16,7 +16,7 @@ Undo move, alpha beta pruning, and move order optimizations were tested on a two
 Using C++ **high resolution clock**, the execution time to search **60** different chess positions of three types at depth **4** was measured **100** times per engine\
 Standard deviations, average execution times, and relative differences were calculated for each executed position\
 For each type of position and each engine, average relative differences and average standard deviations were calculated\
-The final relative differences and standard deviations for each engine are displayed above\
+The final relative differences in execution speed and standard deviations for each engine are displayed above\
 All tests were executed on the same machine using at least 99.5% of the CPU. More technical specifications are found in **technical-specification**\
 \
 Positions: **20** normal, **20** tactic, **20** end game\
@@ -33,7 +33,7 @@ Positions: **20** normal, **20** tactic, **20** end game\
 # Optimizations
 **Undo move** optimization relies on passing chess positions as references instead of copies. Since copying chess positions can be slow, reversing a chess move after returning from a deeper search instead may decrease execution time.\
 **Alpha beta** pruning optimization stores the best result the opponent can already achieve during search. Any positions that result in anything better can therefore be disregarded. Since less position need to be searched, the execution time decreases.\
-**Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable piece first.
+**Move order** optimization heuristically orders the search to optimize the amount of positions alpha beta pruning can disregard. Specifically, this investigation uses MVVLVA (Most Valuable Victim - Least Valuable Aggressor) ordering to search moves that use less valuable pieces to capture more valuable pieces first.
 # Data
 The chess positions executed are located in **bot/data/in**\
 The final result is located in **bot/data/out**\

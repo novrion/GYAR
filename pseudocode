@@ -74,6 +74,7 @@ function Minimax(chess_board, depth, side)
 
 
 # Minimax With Alpha Beta & Move Order Optimizations
+# Minimax With Alpha Beta & Not Move Order Optimizations (remove "SortMVVLVA(moves)")
 function Minimax(chess_board, depth, side, alpha, beta)
 
     if (depth == 0)

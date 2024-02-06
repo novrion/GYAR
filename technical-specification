@@ -1,13 +1,12 @@
-OS: Arch Linux x86_64
+Machine Specifications:
+
+Operating system: Arch Linux x86_64
 Kernel: 6.5.9-arch2-1
-Shell: bash 5.2.15
-Terminal: Alacritty
-CPU: Intel i7-6700 (8) @ 4.000GHz
-GPU: NVIDIA GeForce GTX 1060 6GB
-Memory: 16GB
+CPU: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz (4 cores) (ran at 4.00GHz)
 
-CPU model name: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
-(4 cores)
 
-g++ version: g++ (GCC) 13.2.1 20230801
-Compiled with O2 & std=c++17
+
+Compilation Specifications:
+
+Compiler: g++ (GCC) 13.2.1 20230801
+Parameters: O2, std=c++17
